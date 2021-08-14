@@ -1,6 +1,14 @@
 import { render } from 'solid-js/web';
 
-import './index.css';
+import GlobalStyles from './GlobalStyles';
 import App from './App';
 
-render(() => <App />, document.getElementById('root')!);
+render(
+  () => (
+    <>
+      <GlobalStyles />
+      <App />
+    </>
+  ),
+  document.getElementById('root')!
+);
