@@ -1,6 +1,6 @@
 import { styled } from 'solid-styled-components';
 
-import Input from '../../Input';
+import Form from './Form';
 import { isViewportNarrow } from '../../../store';
 
 interface WrapperProps {
@@ -25,7 +25,7 @@ const Main = () => {
   return (
     <Wrapper hasMargin={!isViewportNarrow()}>
       <ContentWrapper>
-        <Input width='100%' onChange={() => {}} />
+        <Form />
       </ContentWrapper>
     </Wrapper>
   );
