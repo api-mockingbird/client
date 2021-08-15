@@ -25,13 +25,18 @@ interface LabeledInputProps {
   onChange: () => void;
   description: string;
   errorMessage: string;
+  placeholder?: string;
 }
 
 const LabeledInput = (props: LabeledInputProps) => {
   return (
     <Wrapper>
       <StyledLabel>{props.label}</StyledLabel>
-      <Input value={props.value} onChange={props.onChange} />
+      <Input
+        value={props.value}
+        onChange={props.onChange}
+        placeholder={props.placeholder}
+      />
       <Message isRed={!!props.errorMessage}>
         {props.errorMessage || props.description}
       </Message>

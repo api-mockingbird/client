@@ -5,13 +5,11 @@ interface ContainerProps {
   width?: string;
 }
 
-const Container = styled('div')<ContainerProps>(
-  props => `
-    position: relative;
-    width: ${props.width};
-  `
-);
-
+const Container = styled('div')<ContainerProps>`
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+`;
 interface StyledSelectProps
   extends JSX.SelectHTMLAttributes<HTMLSelectElement> {}
 
@@ -19,7 +17,7 @@ const StyledSelect = styled('select')<StyledSelectProps>(
   () => `
     width: 100%;
     height: 4rem;
-    padding: 1rem 3.6rem 1rem 1.2rem;
+    padding: 1rem 3.4rem 1rem 1.2rem;
     font-size: 1.4rem;
     border: 1px solid black;
     border-radius: 5px;
@@ -37,19 +35,24 @@ const Arrow = styled('span')`
   background-color: transparent;
   pointer-events: none;
 
+  &::before,
   &::after {
     content: '';
     position: absolute;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 0;
     height: 0;
-    border-left: 0.5rem solid transparent;
-    border-right: 0.5rem solid transparent;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+  }
+  &::before {
+    top: 40%;
+    border-bottom: 0.4rem solid black;
   }
   &::after {
-    border-top: 0.5rem solid black;
+    top: 60%;
+    border-top: 0.4rem solid black;
   }
 `;
 
@@ -63,7 +66,7 @@ interface SelectProps {
 
 const Select = (props: SelectProps) => {
   return (
-    <Container width='100%'>
+    <Container>
       <StyledSelect onChange={props.onChange}>
         <For each={props.options}>
           {option => (
