@@ -2,9 +2,11 @@ import { styled } from 'solid-styled-components';
 
 const Wrapper = styled('div')(
   () => `
-    width: 20rem;
+    position: fixed;
+    width: 26rem;
     height: 100%;
     border-right: 1px solid #e6e6e6;
+    background-color: white;
   `
 );
 
