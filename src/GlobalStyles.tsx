@@ -3,9 +3,9 @@ import { createGlobalStyles } from 'solid-styled-components';
 const GlobalStyles = () => {
   const Styles = createGlobalStyles`
     html {
-      font-size: 52%;
+      font-size: 58%;
 
-      @media only screen and (min-width: 320px) {
+      @media only screen and (min-width: 300px) {
         font-size: 60%;
       }
 

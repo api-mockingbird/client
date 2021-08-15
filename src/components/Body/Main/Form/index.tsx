@@ -1,30 +1,33 @@
-import { JSX } from 'solid-js';
+import { JSX, createSignal } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
+import LabeledInput from './LabeledInput';
 import LabeledSelect from './LabeledSelect';
 import LabeledTextarea from './LabeledTextarea';
 
 const Form = () => {
+  const [nameErrorMessage, setNameErrorMessage] = createSignal('');
+  const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
   const [responseState, setResponseState] = createStore({
+    name: '',
     status: 201,
     contentType: 'application/json',
     charset: 'UTF-8',
     headers: '',
     body: '',
+    timeout: '',
   });
 
   return (
     <>
-      <LabeledSelect
-        label='HTTP Status'
-        options={[
-          { value: 200, text: '200 - OK' },
-          { value: 201, text: '201 - Created' },
-        ]}
-        preSelectedValue={responseState.status}
-        onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setResponseState({ status: Number(this.value) });
+      <LabeledInput
+        label='Response Name'
+        value={responseState.name}
+        onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
+          setResponseState({ timeout: this.value as string });
         }}
+        description='Unique name of endpoint.'
+        errorMessage={nameErrorMessage()}
       />
       <LabeledSelect
         label='Response Content Type'
@@ -56,7 +59,7 @@ const Form = () => {
         ) {
           setResponseState({ headers: this.value as string });
         }}
-        rows={4}
+        rows={3}
       />
       <LabeledTextarea
         label='HTTP Response Body'
@@ -67,6 +70,15 @@ const Form = () => {
           setResponseState({ body: this.value as string });
         }}
         rows={8}
+      />
+      <LabeledInput
+        label='Timeout (ms)'
+        value={responseState.timeout}
+        onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
+          setResponseState({ timeout: this.value as string });
+        }}
+        description='Set timeout for response.'
+        errorMessage={timeoutErrorMessage()}
       />
     </>
   );
