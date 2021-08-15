@@ -9,7 +9,7 @@ const StyledButton = styled('button')(
   (props: IStyledButtonProps) => `
     display: flex;
     align-items: center;
-    padding: .8rem 1rem;
+    padding: 0.8rem 1rem;
     font-size: ${props.fontSize || '1.6rem'};
     background-color: white;
     border: 1px solid;
@@ -17,7 +17,7 @@ const StyledButton = styled('button')(
 
     .icon {
       display: flex;
-      margin-right: .8rem;
+      margin-right: 0.8rem;
       vertical-align: middle;
       width: 2rem;
       height: 2rem;
