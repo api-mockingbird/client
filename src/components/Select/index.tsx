@@ -19,7 +19,7 @@ const StyledSelect = styled('select')<StyledSelectProps>(
   () => `
     width: 100%;
     height: 4rem;
-    padding: 1rem 3.4rem 1rem 1rem;
+    padding: 1rem 3.6rem 1rem 1.2rem;
     font-size: 1.4rem;
     border: 1px solid black;
     border-radius: 5px;
@@ -53,8 +53,11 @@ const Arrow = styled('span')`
   }
 `;
 
+type OptionValue = string | number;
+
 interface SelectProps {
-  options: { value: string | number; text: string }[];
+  options: { value: OptionValue; text: string }[];
+  preSelectedValue?: OptionValue;
   onChange: (ev: Event) => void;
 }
 
@@ -63,7 +66,14 @@ const Select = (props: SelectProps) => {
     <Container width='100%'>
       <StyledSelect onChange={props.onChange}>
         <For each={props.options}>
-          {option => <option value={option.value}>{option.text}</option>}
+          {option => (
+            <option
+              value={option.value}
+              selected={option.value === props.preSelectedValue}
+            >
+              {option.text}
+            </option>
+          )}
         </For>
       </StyledSelect>
       <Arrow />
