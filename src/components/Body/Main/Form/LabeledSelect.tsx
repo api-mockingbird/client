@@ -1,5 +1,3 @@
-import { JSX } from 'solid-js';
-import { PropAliases } from 'solid-js/web';
 import { styled } from 'solid-styled-components';
 
 import Select from '../../../Select';
