@@ -9,10 +9,7 @@ const Wrapper = styled('div')`
 const AuthButton = () => {
   return (
     <Wrapper>
-      <Button onClick={() => console.log('hi')}>
-        {/* <img className='icon' src='src/assets/github.png' alt='github logo' /> */}
-        Sign In
-      </Button>
+      <Button onClick={() => console.log('hi')}>Sign In</Button>
     </Wrapper>
   );
 };
