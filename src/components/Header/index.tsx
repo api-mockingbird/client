@@ -1,35 +1,62 @@
+import { createSignal, onMount, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-import Button from '../Button';
+import Hamburger from './Hamburger';
+import AuthButton from './AuthButton';
 
 const Wrapper = styled('header')`
   position: fixed;
   top: 0;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   min-width: 280px;
-  height: 6.8rem;
+  height: 6.4rem;
   padding: 0 1.8rem;
   box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.2);
 `;
 
+const LeftSectionWrapper = styled('div')`
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 1rem;
+`;
+
 const Title = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 2.4rem;
   font-weight: bold;
-  text-transform: uppercase;
+  text-align: center;
   letter-spacing: 0.1rem;
 `;
 
 const Header = () => {
+  const [isViewportNarrow, setIsViewportNarrow] = createSignal(
+    window.innerWidth < 480
+  );
+
+  onMount(() => {
+    window.addEventListener('resize', () => {
+      if (window.matchMedia('(min-width: 480px)').matches) {
+        setIsViewportNarrow(false);
+      } else {
+        setIsViewportNarrow(true);
+      }
+    });
+  });
+
   return (
     <Wrapper>
-      <Title>Mockingbird</Title>
-      <Button onClick={() => console.log('hi')}>
-        <img className='icon' src='src/assets/github.png' alt='github logo' />
-        Sign In
-      </Button>
+      <LeftSectionWrapper>
+        <Show when={isViewportNarrow()}>
+          <Hamburger />
+        </Show>
+        <Title>Mockingbird</Title>
+      </LeftSectionWrapper>
+      <AuthButton />
     </Wrapper>
   );
 };
