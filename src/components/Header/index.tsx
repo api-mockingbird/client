@@ -16,6 +16,8 @@ const Wrapper = styled('header')`
   height: 6.2rem;
   padding: 0 1.8rem;
   border-bottom: 1px solid #e6e6e6;
+  background-color: white;
+  z-index: 1000;
 `;
 
 const LeftSectionWrapper = styled('div')`

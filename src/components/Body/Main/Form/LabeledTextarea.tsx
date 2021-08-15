@@ -1,14 +1,10 @@
 import { styled } from 'solid-styled-components';
 
 import Textarea from '../../../Textarea';
+import StyledLabel from './Label';
 
 const Wrapper = styled('div')`
   margin-bottom: 1.4rem;
-`;
-
-const StyledLabel = styled('div')`
-  margin-bottom: 0.5rem;
-  font-size: 1.4rem;
 `;
 
 interface LabeledTextareaProps {

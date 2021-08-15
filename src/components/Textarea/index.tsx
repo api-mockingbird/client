@@ -13,6 +13,7 @@ const StyledTextarea = styled('textarea')<StyledTextareaProps>`
   font-size: 1.4rem;
   border: 1px solid black;
   border-radius: 5px;
+  resize: vertical;
 `;
 interface TextareaProps
   extends JSX.TextareaHTMLAttributes<HTMLTextAreaElement> {
