@@ -10,7 +10,7 @@ const StyledInput = styled('input')<StyledInputProps>(
     width: ${props.width};
     max-width: ${props.maxWidth};
     height: 4rem;
-    padding: 1rem 1rem;
+    padding: 1rem 1.2rem;
     font-size: 1.4rem;
     border: 1px solid black;
     border-radius: 5px;
