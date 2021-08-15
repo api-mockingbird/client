@@ -12,9 +12,9 @@ const Wrapper = styled('header')`
   align-items: center;
   width: 100%;
   min-width: 280px;
-  height: 6.4rem;
+  height: 6.2rem;
   padding: 0 1.8rem;
-  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #e6e6e6;
 `;
 
 const LeftSectionWrapper = styled('div')`
