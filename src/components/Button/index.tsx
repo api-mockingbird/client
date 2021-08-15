@@ -1,12 +1,13 @@
+import { JSX, JSXElement } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-interface IStyledButtonProps {
+interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   fontSize?: string;
-  disabled?: boolean;
+  onClick: () => void;
 }
 
-const StyledButton = styled('button')(
-  (props: IStyledButtonProps) => `
+const StyledButton = styled('button')<ButtonProps>(
+  props => `
     display: flex;
     align-items: center;
     padding: 0.8rem 1rem;
@@ -14,23 +15,10 @@ const StyledButton = styled('button')(
     background-color: white;
     border: 1px solid;
     border-radius: 0.5rem;
-
-    .icon {
-      display: flex;
-      margin-right: 0.8rem;
-      vertical-align: middle;
-      width: 2rem;
-      height: 2rem;
-    }
   `
 );
 
-interface IButtonProps {
-  onClick: () => void;
-  children: any;
-}
-
-const Button = (props: IButtonProps) => {
+const Button = (props: ButtonProps) => {
   return <StyledButton onClick={props.onClick}>{props.children}</StyledButton>;
 };
 

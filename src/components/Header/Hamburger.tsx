@@ -1,5 +1,6 @@
-import { createSignal, createEffect } from 'solid-js';
 import { styled } from 'solid-styled-components';
+
+import { isHamburgerActive, setIsHamburgerActive } from '../../store';
 
 const Wrapper = styled('div')`
   display: flex;
@@ -13,8 +14,12 @@ const Wrapper = styled('div')`
   transition-duration: 0.15s;
 `;
 
-const Line = styled('div')(
-  (props: { isShrunk: boolean }) => `
+interface LineProps {
+  isShrunk: boolean;
+}
+
+const Line = styled('div')<LineProps>(
+  props => `
     width: 2.4rem;
     height: 0.3rem;
     transition-timing-function: ease;
@@ -42,18 +47,11 @@ const Line = styled('div')(
 );
 
 const Hamburger = () => {
-  const [isShrunk, setIsShrunk] = createSignal(false);
-  const toggleBurger = () => {
-    if (isShrunk()) {
-      setIsShrunk(false);
-    } else {
-      setIsShrunk(true);
-    }
-  };
+  const toggleBurger = () => setIsHamburgerActive(!isHamburgerActive());
 
   return (
     <Wrapper onClick={toggleBurger}>
-      <Line isShrunk={isShrunk()} />
+      <Line isShrunk={isHamburgerActive()} />
     </Wrapper>
   );
 };

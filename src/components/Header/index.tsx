@@ -1,8 +1,9 @@
-import { createSignal, onMount, Show } from 'solid-js';
+import { Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import Hamburger from './Hamburger';
 import AuthButton from './AuthButton';
+import { isViewportNarrow } from '../../store';
 
 const Wrapper = styled('header')`
   position: fixed;
@@ -34,20 +35,6 @@ const Title = styled('div')`
 `;
 
 const Header = () => {
-  const [isViewportNarrow, setIsViewportNarrow] = createSignal(
-    window.innerWidth < 480
-  );
-
-  onMount(() => {
-    window.addEventListener('resize', () => {
-      if (window.matchMedia('(min-width: 480px)').matches) {
-        setIsViewportNarrow(false);
-      } else {
-        setIsViewportNarrow(true);
-      }
-    });
-  });
-
   return (
     <Wrapper>
       <LeftSectionWrapper>
