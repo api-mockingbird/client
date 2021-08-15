@@ -1,14 +1,16 @@
-import { JSX, createEffect } from 'solid-js';
+import { JSX } from 'solid-js';
 import { createStore } from 'solid-js/store';
-import { styled } from 'solid-styled-components';
 
 import LabeledSelect from './LabeledSelect';
+import LabeledTextarea from './LabeledTextarea';
 
 const Form = () => {
   const [responseState, setResponseState] = createStore({
-    httpStatus: 201,
+    status: 201,
     contentType: 'application/json',
     charset: 'UTF-8',
+    headers: '',
+    body: '',
   });
 
   return (
@@ -19,9 +21,9 @@ const Form = () => {
           { value: 200, text: '200 - OK' },
           { value: 201, text: '201 - Created' },
         ]}
-        preSelectedValue={responseState.httpStatus}
+        preSelectedValue={responseState.status}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setResponseState({ httpStatus: Number(this.value) });
+          setResponseState({ status: Number(this.value) });
         }}
       />
       <LabeledSelect
@@ -45,6 +47,26 @@ const Form = () => {
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
           setResponseState({ contentType: this.value as string });
         }}
+      />
+      <LabeledTextarea
+        label='HTTP Headers'
+        value={responseState.headers}
+        onChange={function (
+          this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
+        ) {
+          setResponseState({ headers: this.value as string });
+        }}
+        rows={4}
+      />
+      <LabeledTextarea
+        label='HTTP Response Body'
+        value={responseState.body}
+        onChange={function (
+          this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
+        ) {
+          setResponseState({ body: this.value as string });
+        }}
+        rows={8}
       />
     </>
   );
