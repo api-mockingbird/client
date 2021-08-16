@@ -1,6 +1,6 @@
 import { styled } from 'solid-styled-components';
 
-import Textarea from '../../../Textarea';
+import Textarea from '../../../components/Textarea';
 import StyledLabel from './Label';
 
 const Wrapper = styled('div')`

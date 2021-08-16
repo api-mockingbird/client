@@ -2,8 +2,8 @@ import { Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import Hamburger from './Hamburger';
-import AuthButton from './AuthButton';
-import { isViewportNarrow } from '../../store';
+import Button from '../../../components/Button';
+import { isViewportNarrow } from '../../../store';
 
 const Wrapper = styled('header')`
   position: fixed;
@@ -35,6 +35,10 @@ const Title = styled('div')`
   text-align: center;
   letter-spacing: 0.1rem;
 `;
+
+const AuthButton = () => {
+  return <Button onClick={() => console.log('hi')}>Sign In</Button>;
+};
 
 const Header = () => {
   return (

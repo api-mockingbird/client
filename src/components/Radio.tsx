@@ -59,4 +59,10 @@ const RadioUnit = (props: RadioUnitProps) => {
   );
 };
 
-export default RadioUnit;
+interface RadioProps {
+  options: { value: string | number; text: string }[];
+}
+
+const Radio = (props: RadioProps) => {};
+
+export default Radio;
