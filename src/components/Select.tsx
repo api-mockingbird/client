@@ -18,6 +18,7 @@ const StyledSelect = styled('select')<StyledSelectProps>(
     border: 1px solid black;
     border-radius: 5px;
     appearance: none;
+    -webkit-appearance: none;
   `
 );
 
