@@ -1,8 +1,8 @@
 import { Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-import Sidebar from './Sidebar';
-import Main from './Main';
+import Sidebar from './components/Sidebar';
+import MainContent from './components/MainContent';
 import { isHamburgerActive, isViewportNarrow } from '../../store';
 
 const Wrapper = styled('div')`
@@ -17,7 +17,7 @@ const Body = () => {
       <Show when={!isViewportNarrow() || isHamburgerActive()}>
         <Sidebar />
       </Show>
-      <Main />
+      <MainContent />
     </Wrapper>
   );
 };

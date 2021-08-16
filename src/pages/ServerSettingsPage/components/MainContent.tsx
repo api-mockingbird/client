@@ -2,21 +2,31 @@ import { JSX, createSignal } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { styled } from 'solid-styled-components';
 
+import { isViewportNarrow } from '../../../store';
 import LabeledInput from './LabeledInput';
 import LabeledSelect from './LabeledSelect';
 import LabeledTextarea from './LabeledTextarea';
+import SaveButton from './SaveButton';
 
-const MethodEndpointWrapper = styled('div')`
-  margin-bottom: 1.4rem;
+interface WrapperProps {
+  hasMargin: boolean;
+}
+
+const Wrapper = styled('div')<WrapperProps>(
+  props => `
+    margin-left: ${props.hasMargin ? '26rem' : 0};
+    width: 100%;
+  `
+);
+
+const ContentWrapper = styled('div')`
+  margin: 2rem auto;
+  min-width: 28rem;
+  max-width: 40rem;
+  padding: 1.5rem 1.5rem 6rem;
 `;
 
-const MethodEndpointInputsWrapper = styled('div')`
-  display: grid;
-  grid-template-columns: 1.6fr 4fr;
-  grid-gap: 0.8rem;
-`;
-
-const Form = () => {
+const ServerSettingsForm = () => {
   const [nameErrorMessage, setNameErrorMessage] = createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
   const [endpointErrorMessage, setEndpointErrorMessage] = createSignal('');
@@ -139,8 +149,19 @@ const Form = () => {
         description='Set timeout for response.'
         errorMessage={timeoutErrorMessage()}
       />
+      <SaveButton onClick={() => console.log('save')} />
     </>
   );
 };
 
-export default Form;
+const Main = () => {
+  return (
+    <Wrapper hasMargin={!isViewportNarrow()}>
+      <ContentWrapper>
+        <ServerSettingsForm />
+      </ContentWrapper>
+    </Wrapper>
+  );
+};
+
+export default Main;
