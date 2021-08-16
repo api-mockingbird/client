@@ -52,12 +52,6 @@ const GlobalStyles = () => {
         cursor: not-allowed;
       }
     }
-
-    input,
-    textarea,
-    select {
-      outline: none;
-    }
   `;
 
   return <Styles />;
