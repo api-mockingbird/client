@@ -1,11 +1,7 @@
 import { JSX, For } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-interface ContainerProps {
-  width?: string;
-}
-
-const Container = styled('div')<ContainerProps>`
+const Container = styled('div')`
   position: relative;
   width: 100%;
   cursor: pointer;
@@ -30,8 +26,8 @@ const Arrow = styled('span')`
   top: 0;
   right: 0;
   display: block;
-  height: 100%;
   width: 3.6rem;
+  height: 100%;
   background-color: transparent;
   pointer-events: none;
 

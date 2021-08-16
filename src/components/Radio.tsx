@@ -7,9 +7,7 @@ const Label = styled('label')`
   cursor: pointer;
 `;
 
-interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {}
-
-const Input = styled('input')<InputProps>`
+const Input = styled('input')<JSX.InputHTMLAttributes<HTMLInputElement>>`
   display: none;
 `;
 

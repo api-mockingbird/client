@@ -9,7 +9,7 @@ const GlobalStyles = () => {
         font-size: 60%;
       }
 
-      @media only screen and (min-width: 480px) {
+      @media only screen and (min-width: 520px) {
         font-size: 62.5%;
       }
     }

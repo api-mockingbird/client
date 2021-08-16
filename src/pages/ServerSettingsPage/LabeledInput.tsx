@@ -26,6 +26,7 @@ interface LabeledInputProps {
   description: string;
   errorMessage: string;
   placeholder?: string;
+  suffix?: string;
 }
 
 const LabeledInput = (props: LabeledInputProps) => {
@@ -36,6 +37,7 @@ const LabeledInput = (props: LabeledInputProps) => {
         value={props.value}
         onChange={props.onChange}
         placeholder={props.placeholder}
+        suffix={props.suffix}
       />
       <Message isRed={!!props.errorMessage}>
         {props.errorMessage || props.description}

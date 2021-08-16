@@ -21,8 +21,8 @@ const Wrapper = styled('div')<WrapperProps>(
 
 const ContentWrapper = styled('div')`
   margin: 2rem auto;
-  min-width: 28rem;
-  max-width: 40rem;
+  min-width: 26rem;
+  max-width: 36rem;
   padding: 1.5rem 1.5rem 6rem;
 `;
 
@@ -146,16 +146,17 @@ const ServerSettingsForm = () => {
         rows={8}
       />
       <LabeledInput
-        label='Timeout (ms)'
+        label='Timeout'
         value={responseState.timeout}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
           setResponseState({ timeout: this.value as string });
         }}
+        suffix='ms'
         description='Set timeout for response.'
         errorMessage={timeoutErrorMessage()}
       />
       <SaveButtonWrapper>
-        <SaveButton onClick={() => console.log('save')} />
+        <SaveButton onClick={() => console.log(responseState)} />
       </SaveButtonWrapper>
     </>
   );

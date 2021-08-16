@@ -19,7 +19,7 @@ const BodyWrapper = styled('div')`
 const ServerSettingsPage = () => {
   onMount(() => {
     window.addEventListener('resize', () => {
-      if (window.matchMedia('(min-width: 480px)').matches) {
+      if (window.matchMedia('(min-width: 520px)').matches) {
         setIsViewportNarrow(false);
       } else {
         setIsViewportNarrow(true);
