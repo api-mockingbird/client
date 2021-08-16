@@ -1,11 +1,8 @@
 import { styled } from 'solid-styled-components';
 
+import InputFieldWrapper from './InputFieldWrapper';
 import StyledLabel from './Label';
 import Input from '../../components/Input';
-
-const Wrapper = styled('div')`
-  margin-bottom: 1.4rem;
-`;
 
 interface MessageProps {
   isRed: boolean;
@@ -31,7 +28,7 @@ interface LabeledInputProps {
 
 const LabeledInput = (props: LabeledInputProps) => {
   return (
-    <Wrapper>
+    <InputFieldWrapper>
       <StyledLabel>{props.label}</StyledLabel>
       <Input
         value={props.value}
@@ -42,7 +39,7 @@ const LabeledInput = (props: LabeledInputProps) => {
       <Message isRed={!!props.errorMessage}>
         {props.errorMessage || props.description}
       </Message>
-    </Wrapper>
+    </InputFieldWrapper>
   );
 };
 

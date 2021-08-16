@@ -1,11 +1,6 @@
-import { styled } from 'solid-styled-components';
-
+import InputFieldWrapper from './InputFieldWrapper';
 import Textarea from '../../components/Textarea';
 import StyledLabel from './Label';
-
-const Wrapper = styled('div')`
-  margin-bottom: 1.4rem;
-`;
 
 interface LabeledTextareaProps {
   label: string;
@@ -17,7 +12,7 @@ interface LabeledTextareaProps {
 
 const LabeledTextarea = (props: LabeledTextareaProps) => {
   return (
-    <Wrapper>
+    <InputFieldWrapper>
       <StyledLabel>{props.label}</StyledLabel>
       <Textarea
         value={props.value}
@@ -25,7 +20,7 @@ const LabeledTextarea = (props: LabeledTextareaProps) => {
         onChange={props.onChange}
         rows={props.rows}
       />
-    </Wrapper>
+    </InputFieldWrapper>
   );
 };
 
