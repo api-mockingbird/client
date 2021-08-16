@@ -2,7 +2,7 @@ import { JSX, createSignal } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { styled } from 'solid-styled-components';
 
-import { isViewportNarrow } from '../../../store';
+import { isViewportNarrow } from '../../store';
 import LabeledInput from './LabeledInput';
 import LabeledSelect from './LabeledSelect';
 import LabeledTextarea from './LabeledTextarea';
@@ -26,6 +26,11 @@ const ContentWrapper = styled('div')`
   padding: 1.5rem 1.5rem 6rem;
 `;
 
+const SaveButtonWrapper = styled('div')`
+  position: sticky;
+  bottom: 1.4rem;
+`;
+
 const ServerSettingsForm = () => {
   const [nameErrorMessage, setNameErrorMessage] = createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
@@ -45,7 +50,7 @@ const ServerSettingsForm = () => {
   return (
     <>
       <LabeledInput
-        label='Response Name *'
+        label='Response Name*'
         value={responseState.name}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
           setResponseState({ name: this.value as string });
@@ -54,7 +59,7 @@ const ServerSettingsForm = () => {
         errorMessage={nameErrorMessage()}
       />
       <LabeledSelect
-        label='HTTP Method *'
+        label='HTTP Method*'
         options={[
           { value: 'GET', text: 'GET' },
           { value: 'POST', text: 'POST' },
@@ -68,7 +73,7 @@ const ServerSettingsForm = () => {
         }}
       />
       <LabeledInput
-        label='Endpoint *'
+        label='Endpoint*'
         value={responseState.endpoint}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
           setResponseState({ endpoint: this.value as string });
@@ -78,7 +83,7 @@ const ServerSettingsForm = () => {
         placeholder='/api/users'
       />
       <LabeledSelect
-        label='HTTP Status *'
+        label='HTTP Status*'
         options={[
           { value: 200, text: '200 - OK' },
           { value: 201, text: '201 - Created' },
@@ -99,7 +104,7 @@ const ServerSettingsForm = () => {
         }}
       />
       <LabeledSelect
-        label='Response Content Type *'
+        label='Response Content Type*'
         options={[
           { value: 'application/json', text: 'application/json' },
           {
@@ -113,7 +118,7 @@ const ServerSettingsForm = () => {
         }}
       />
       <LabeledSelect
-        label='Charset *'
+        label='Charset*'
         options={[{ value: 'UTF-8', text: 'UTF-8' }]}
         preSelectedValue={responseState.charset}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
@@ -149,7 +154,9 @@ const ServerSettingsForm = () => {
         description='Set timeout for response.'
         errorMessage={timeoutErrorMessage()}
       />
-      <SaveButton onClick={() => console.log('save')} />
+      <SaveButtonWrapper>
+        <SaveButton onClick={() => console.log('save')} />
+      </SaveButtonWrapper>
     </>
   );
 };

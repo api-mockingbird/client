@@ -1,6 +1,6 @@
 import { styled } from 'solid-styled-components';
 
-import { isHamburgerActive, setIsHamburgerActive } from '../../../store';
+import { isHamburgerActive, setIsHamburgerActive } from '../../store';
 
 const Wrapper = styled('div')`
   display: flex;

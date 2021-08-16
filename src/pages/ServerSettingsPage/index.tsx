@@ -1,25 +1,29 @@
 import { Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-import Sidebar from './components/Sidebar';
-import MainContent from './components/MainContent';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import MainContent from './MainContent';
 import { isHamburgerActive, isViewportNarrow } from '../../store';
 
-const Wrapper = styled('div')`
+const BodyWrapper = styled('div')`
   display: flex;
   margin-top: 6.2rem;
   height: calc(100vh - 6.2rem);
 `;
 
-const Body = () => {
+const ServerSettingsPage = () => {
   return (
-    <Wrapper>
-      <Show when={!isViewportNarrow() || isHamburgerActive()}>
-        <Sidebar />
-      </Show>
-      <MainContent />
-    </Wrapper>
+    <>
+      <Header />
+      <BodyWrapper>
+        <Show when={!isViewportNarrow() || isHamburgerActive()}>
+          <Sidebar />
+        </Show>
+        <MainContent />
+      </BodyWrapper>
+    </>
   );
 };
 
-export default Body;
+export default ServerSettingsPage;

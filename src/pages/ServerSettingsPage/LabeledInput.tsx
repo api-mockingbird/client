@@ -1,7 +1,7 @@
 import { styled } from 'solid-styled-components';
 
 import StyledLabel from './Label';
-import Input from '../../../components/Input';
+import Input from '../../components/Input';
 
 const Wrapper = styled('div')`
   margin-bottom: 1.4rem;

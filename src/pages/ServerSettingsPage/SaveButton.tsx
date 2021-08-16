@@ -1,7 +1,4 @@
-import { JSX } from 'solid-js';
-import { styled } from 'solid-styled-components';
-
-import Button, { ButtonProps } from '../../../components/Button';
+import Button, { ButtonProps } from '../../components/Button';
 
 const SaveButton = (props: ButtonProps) => {
   return (

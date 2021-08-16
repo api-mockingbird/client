@@ -1,6 +1,6 @@
 import { styled } from 'solid-styled-components';
 
-import Select from '../../../components/Select';
+import Select from '../../components/Select';
 import StyledLabel from './Label';
 
 const Wrapper = styled('div')`

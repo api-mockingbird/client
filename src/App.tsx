@@ -1,8 +1,7 @@
 import { onMount } from 'solid-js';
 
-import Header from './pages/ServerSettingsPage/components/Header';
-import Body from './pages/ServerSettingsPage';
 import { setIsViewportNarrow } from './store';
+import ServerSettingsPage from './pages/ServerSettingsPage';
 
 const App = () => {
   onMount(() => {
@@ -15,12 +14,7 @@ const App = () => {
     });
   });
 
-  return (
-    <>
-      <Header />
-      <Body />
-    </>
-  );
+  return <ServerSettingsPage />;
 };
 
 export default App;

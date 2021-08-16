@@ -2,8 +2,8 @@ import { Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import Hamburger from './Hamburger';
-import Button from '../../../components/Button';
-import { isViewportNarrow } from '../../../store';
+import Button from '../../components/Button';
+import { isViewportNarrow } from '../../store';
 
 const Wrapper = styled('header')`
   position: fixed;
