@@ -6,7 +6,7 @@ const SaveButton = (props: ButtonProps) => {
       width='100%'
       height='4.2rem'
       color='white'
-      backgroundColor='blue'
+      backgroundColor='#2e5cf2'
       onClick={props.onClick}
     >
       Save
