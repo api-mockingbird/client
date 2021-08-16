@@ -1,10 +1,14 @@
-import { Show } from 'solid-js';
+import { onMount, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
-import { isHamburgerActive, isViewportNarrow } from '../../store';
+import {
+  isHamburgerActive,
+  isViewportNarrow,
+  setIsViewportNarrow,
+} from '../../store';
 
 const BodyWrapper = styled('div')`
   display: flex;
@@ -13,6 +17,16 @@ const BodyWrapper = styled('div')`
 `;
 
 const ServerSettingsPage = () => {
+  onMount(() => {
+    window.addEventListener('resize', () => {
+      if (window.matchMedia('(min-width: 480px)').matches) {
+        setIsViewportNarrow(false);
+      } else {
+        setIsViewportNarrow(true);
+      }
+    });
+  });
+
   return (
     <>
       <Header />

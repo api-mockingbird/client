@@ -78,7 +78,7 @@ const ServerSettingsForm = () => {
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
           setResponseState({ endpoint: this.value as string });
         }}
-        description='Exclude base URL.'
+        description='Do not include hostname.'
         errorMessage={endpointErrorMessage()}
         placeholder='/api/users'
       />
