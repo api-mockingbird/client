@@ -8,6 +8,8 @@ export interface StyledButtonProps
   fontSize?: string;
   color?: string;
   backgroundColor?: string;
+  borderStyle?: string;
+  borderColor?: string;
 }
 
 const StyledButton = styled('button')<ButtonProps>(
@@ -19,7 +21,9 @@ const StyledButton = styled('button')<ButtonProps>(
     text-align: center;
     color: ${props.color || 'black'};
     background-color: ${props.backgroundColor || 'white'};
-    border: 1px solid;
+    border: 1px ${props.borderStyle || 'solid'} ${
+    props.borderColor || 'transparent'
+  };
     border-radius: 0.5rem;
   `
 );
@@ -37,6 +41,7 @@ const Button = (props: ButtonProps) => {
       fontSize={props.fontSize}
       color={props.color}
       backgroundColor={props.backgroundColor}
+      borderColor={props.borderColor}
       onClick={props.onClick}
     >
       {props.children}

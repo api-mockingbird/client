@@ -156,7 +156,14 @@ const ServerSettingsForm = () => {
         errorMessage={timeoutErrorMessage()}
       />
       <SaveButtonWrapper>
-        <SaveButton onClick={() => console.log(responseState)} />
+        <SaveButton
+          onClick={async () => {
+            console.log(responseState);
+            const res = await fetch('http://localhost:4000');
+            const response = await res.json();
+            console.log(response);
+          }}
+        />
       </SaveButtonWrapper>
     </>
   );

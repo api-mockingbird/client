@@ -15,8 +15,7 @@ const Wrapper = styled('header')`
   min-width: 280px;
   height: 6.2rem;
   padding: 0 1.8rem;
-  border-bottom: 1px solid #e6e6e6;
-  background-color: white;
+  background-color: #151515;
   z-index: 1000;
 `;
 
@@ -34,10 +33,20 @@ const Title = styled('div')`
   font-weight: bold;
   text-align: center;
   letter-spacing: 0.1rem;
+  color: white;
 `;
 
 const AuthButton = () => {
-  return <Button onClick={() => console.log('hi')}>Sign In</Button>;
+  return (
+    <Button
+      color='white'
+      backgroundColor='#151515'
+      borderColor='white'
+      onClick={() => console.log('hi')}
+    >
+      Sign In
+    </Button>
+  );
 };
 
 const Header = () => {

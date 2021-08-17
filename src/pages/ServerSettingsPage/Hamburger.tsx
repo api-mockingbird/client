@@ -26,7 +26,7 @@ const Line = styled('div')<LineProps>(
     transition-duration: 0.15s;
     transition-property: transform;
     border-radius: 0.4rem;
-    background-color: black;
+    background-color: white;
 
     &::before,
     &::after {
@@ -35,7 +35,7 @@ const Line = styled('div')<LineProps>(
       width: 2.4rem;
       height: 0.3rem;
       border-radius: 0.4rem;
-      background-color: black;
+      background-color: white;
     }
     &::before {
       transform: ${props.isShrunk ? 'translateY(0)' : 'translateY(-0.7rem)'};
