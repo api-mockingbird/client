@@ -22,8 +22,12 @@ const Wrapper = styled('div')<WrapperProps>(
 const ContentWrapper = styled('div')`
   margin: 2rem auto;
   min-width: 26rem;
-  max-width: 36rem;
+  width: 100%;
   padding: 1.5rem 1.5rem 6rem;
+
+  @media only screen and (min-width: 520px) {
+    max-width: 40rem;
+  }
 `;
 
 const SaveButtonWrapper = styled('div')`

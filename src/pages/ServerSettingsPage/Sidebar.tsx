@@ -7,6 +7,7 @@ const Wrapper = styled('aside')(
     height: 100%;
     box-shadow: 0 10px 40px rgb(0 0 0 / 10%);
     background-color: #f5f5f5;
+    z-index: 1000;
   `
 );
 
