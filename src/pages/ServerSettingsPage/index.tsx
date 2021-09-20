@@ -9,6 +9,7 @@ import {
   isViewportNarrow,
   setIsViewportNarrow,
 } from '../../store';
+import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 
 const BodyWrapper = styled('div')`
   display: flex;
@@ -19,7 +20,10 @@ const BodyWrapper = styled('div')`
 const ServerSettingsPage = () => {
   onMount(() => {
     window.addEventListener('resize', () => {
-      if (window.matchMedia('(min-width: 520px)').matches) {
+      if (
+        window.matchMedia(`(min-width: ${MOBILE_VIEWPORT_BREAKPOINT}px)`)
+          .matches
+      ) {
         setIsViewportNarrow(false);
       } else {
         setIsViewportNarrow(true);

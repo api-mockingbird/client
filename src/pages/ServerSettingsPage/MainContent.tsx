@@ -1,7 +1,8 @@
-import { JSX, createSignal } from 'solid-js';
+import { createSignal, JSX } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { styled } from 'solid-styled-components';
 
+import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import { isViewportNarrow } from '../../store';
 import LabeledInput from './LabeledInput';
 import LabeledSelect from './LabeledSelect';
@@ -25,7 +26,7 @@ const ContentWrapper = styled('div')`
   width: 100%;
   padding: 1.5rem 1.5rem 6rem;
 
-  @media only screen and (min-width: 520px) {
+  @media only screen and (min-width: ${MOBILE_VIEWPORT_BREAKPOINT}px) {
     max-width: 40rem;
   }
 `;

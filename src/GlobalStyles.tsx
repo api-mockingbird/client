@@ -1,5 +1,7 @@
 import { createGlobalStyles } from 'solid-styled-components';
 
+import { MOBILE_VIEWPORT_BREAKPOINT } from './constants';
+
 const GlobalStyles = () => {
   const Styles = createGlobalStyles`
     html {
@@ -9,7 +11,7 @@ const GlobalStyles = () => {
         font-size: 60%;
       }
 
-      @media only screen and (min-width: 520px) {
+      @media only screen and (min-width: ${MOBILE_VIEWPORT_BREAKPOINT}px) {
         font-size: 62.5%;
       }
     }
