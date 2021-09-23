@@ -78,7 +78,7 @@ const ServerSettingsForm = () => {
         }}
       />
       <LabeledInput
-        label='Endpoint*'
+        label='URL Path*'
         value={responseState.endpoint}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
           setResponseState({ endpoint: this.value as string });
@@ -164,7 +164,7 @@ const ServerSettingsForm = () => {
         <SaveButton
           onClick={async () => {
             console.log(responseState);
-            const res = await fetch('http://localhost:4000');
+            const res = await fetch('http://localhost:4000/users');
             const response = await res.json();
             console.log(response);
           }}
