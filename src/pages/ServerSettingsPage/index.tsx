@@ -1,5 +1,6 @@
-import { onMount, Show } from 'solid-js';
+import { createEffect, onMount, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
+import { gql } from '@urql/core';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -10,6 +11,7 @@ import {
   setIsViewportNarrow,
 } from '../../store';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
+import { User } from '../../types';
 
 const BodyWrapper = styled('div')`
   display: flex;
@@ -17,7 +19,11 @@ const BodyWrapper = styled('div')`
   height: calc(100vh - 6.2rem);
 `;
 
-const ServerSettingsPage = () => {
+interface ServerSettingsPageProps {
+  user: User | null;
+}
+
+const ServerSettingsPage = (props: ServerSettingsPageProps) => {
   onMount(() => {
     window.addEventListener('resize', () => {
       if (
@@ -38,7 +44,7 @@ const ServerSettingsPage = () => {
         <Show when={!isViewportNarrow() || isHamburgerActive()}>
           <Sidebar />
         </Show>
-        <MainContent />
+        <MainContent user={props.user} />
       </BodyWrapper>
     </>
   );
