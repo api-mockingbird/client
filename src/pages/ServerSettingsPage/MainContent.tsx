@@ -1,14 +1,16 @@
+import { gql } from '@urql/core';
 import { createSignal, JSX } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { styled } from 'solid-styled-components';
+import { createMutation } from 'solid-urql';
 
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import { isViewportNarrow } from '../../store';
+import { User } from '../../types';
 import LabeledInput from './LabeledInput';
 import LabeledSelect from './LabeledSelect';
 import LabeledTextarea from './LabeledTextarea';
 import SaveButton from './SaveButton';
-import { User } from '../../types';
 
 interface WrapperProps {
   hasMargin: boolean;
@@ -41,6 +43,20 @@ interface ServerSettingsFormProps {
   user: User | null;
 }
 
+const createMockEndpointMutation = gql`
+  mutation (
+    $createMockInputData: MockEndpointCreateInput!
+    $createMockInputUserId: String!
+  ) {
+    createMockInput(
+      data: $createMockInputData
+      userId: $createMockInputUserId
+    ) {
+      id
+    }
+  }
+`;
+
 const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   const [nameErrorMessage, setNameErrorMessage] = createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
@@ -56,6 +72,23 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     httpResponseBody: '',
     timeout: '',
   });
+  const [state, executeMutation] = createMutation(createMockEndpointMutation);
+
+  const handleSaveClick = async () => {
+    // validate fields
+
+    const requestData = {
+      ...mockEndpointState,
+      timeout: Number(mockEndpointState.timeout),
+    };
+
+    const res = await executeMutation({
+      createMockInputData: requestData,
+      createMockInputUserId: props.user!.id,
+    });
+
+    console.log(res);
+  };
 
   return (
     <>
@@ -166,7 +199,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         errorMessage={timeoutErrorMessage()}
       />
       <SaveButtonWrapper>
-        <SaveButton user={props.user} data={mockEndpointState} />
+        <SaveButton onClick={handleSaveClick} />
       </SaveButtonWrapper>
     </>
   );

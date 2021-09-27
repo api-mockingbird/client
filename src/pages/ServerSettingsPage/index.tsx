@@ -1,17 +1,12 @@
-import { createEffect, onMount, Show } from 'solid-js';
+import { onMount, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
-import { gql } from '@urql/core';
 
-import Header from './Header';
-import Sidebar from './Sidebar';
-import MainContent from './MainContent';
-import {
-  isHamburgerActive,
-  isViewportNarrow,
-  setIsViewportNarrow,
-} from '../../store';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
+import { isHamburgerActive, isViewportNarrow, setIsViewportNarrow } from '../../store';
 import { User } from '../../types';
+import Header from './Header';
+import MainContent from './MainContent';
+import Sidebar from './Sidebar';
 
 const BodyWrapper = styled('div')`
   display: flex;
