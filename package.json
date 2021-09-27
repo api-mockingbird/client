@@ -17,6 +17,7 @@
     "@urql/core": "^2.3.0",
     "graphql": "^15.5.1",
     "solid-js": "^1.0.7",
-    "solid-styled-components": "^0.27.1"
+    "solid-styled-components": "^0.27.1",
+    "solid-urql": "^0.1.0"
   }
 }

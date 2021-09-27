@@ -1,16 +1,11 @@
-import { createClient, gql } from '@urql/core';
-import { createResource } from 'solid-js';
+import { gql } from '@urql/core';
+import { createQuery } from 'solid-urql';
 
 import ServerSettingsPage from './pages/ServerSettingsPage';
 
-const client = createClient({
-  url: 'http://localhost:4000/graphql',
-  fetchOptions: { credentials: 'include' },
-});
-
 const userQuery = gql`
   query {
-    getUserWithMockEndpoints {
+    getUser {
       id
       mockEndpoints {
         id
@@ -31,14 +26,9 @@ const userQuery = gql`
 `;
 
 const App = () => {
-  const [user] = createResource(() =>
-    client
-      .query(userQuery)
-      .toPromise()
-      .then(({ data }) => console.log(data))
-  );
+  const [user, userState, reexecuteQuery] = createQuery({ query: userQuery });
 
-  return <ServerSettingsPage />;
+  return <ServerSettingsPage user={user()} />;
 };
 
 export default App;

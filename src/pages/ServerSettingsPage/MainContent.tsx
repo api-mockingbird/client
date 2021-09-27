@@ -8,6 +8,7 @@ import LabeledInput from './LabeledInput';
 import LabeledSelect from './LabeledSelect';
 import LabeledTextarea from './LabeledTextarea';
 import SaveButton from './SaveButton';
+import { User } from '../../types';
 
 interface WrapperProps {
   hasMargin: boolean;
@@ -36,19 +37,23 @@ const SaveButtonWrapper = styled('div')`
   bottom: 1.4rem;
 `;
 
-const ServerSettingsForm = () => {
+interface ServerSettingsFormProps {
+  user: User | null;
+}
+
+const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   const [nameErrorMessage, setNameErrorMessage] = createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
   const [endpointErrorMessage, setEndpointErrorMessage] = createSignal('');
-  const [responseState, setResponseState] = createStore({
-    name: '',
-    method: 'GET',
-    endpoint: '',
-    status: 200,
-    contentType: 'application/json',
+  const [mockEndpointState, setMockEndpointState] = createStore({
+    responseName: '',
+    httpMethod: 'GET',
+    urlPath: '',
+    httpStatus: 200,
+    responseContentType: 'application/json',
     charset: 'UTF-8',
-    headers: '',
-    body: '',
+    httpHeaders: '',
+    httpResponseBody: '',
     timeout: '',
   });
 
@@ -56,9 +61,9 @@ const ServerSettingsForm = () => {
     <>
       <LabeledInput
         label='Response Name*'
-        value={responseState.name}
+        value={mockEndpointState.responseName}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          setResponseState({ name: this.value as string });
+          setMockEndpointState({ responseName: this.value as string });
         }}
         description='Unique name of endpoint.'
         errorMessage={nameErrorMessage()}
@@ -72,16 +77,16 @@ const ServerSettingsForm = () => {
           { value: 'PATCH', text: 'PATCH' },
           { value: 'DELETE', text: 'DELETE' },
         ]}
-        preSelectedValue={responseState.method}
+        preSelectedValue={mockEndpointState.httpMethod}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setResponseState({ method: this.value as string });
+          setMockEndpointState({ httpMethod: this.value as string });
         }}
       />
       <LabeledInput
         label='URL Path*'
-        value={responseState.endpoint}
+        value={mockEndpointState.urlPath}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          setResponseState({ endpoint: this.value as string });
+          setMockEndpointState({ urlPath: this.value as string });
         }}
         description='Do not include hostname.'
         errorMessage={endpointErrorMessage()}
@@ -103,9 +108,9 @@ const ServerSettingsForm = () => {
           { value: 503, text: '503 - Service Unavailable' },
           { value: 504, text: '504 - Gateway Timeount' },
         ]}
-        preSelectedValue={responseState.status}
+        preSelectedValue={mockEndpointState.httpStatus}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setResponseState({ status: Number(this.value) });
+          setMockEndpointState({ httpStatus: Number(this.value) });
         }}
       />
       <LabeledSelect
@@ -117,68 +122,65 @@ const ServerSettingsForm = () => {
             text: 'application/x-www-form-urlencoded',
           },
         ]}
-        preSelectedValue={responseState.contentType}
+        preSelectedValue={mockEndpointState.responseContentType}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setResponseState({ contentType: this.value as string });
+          setMockEndpointState({ responseContentType: this.value as string });
         }}
       />
       <LabeledSelect
         label='Charset*'
         options={[{ value: 'UTF-8', text: 'UTF-8' }]}
-        preSelectedValue={responseState.charset}
+        preSelectedValue={mockEndpointState.charset}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setResponseState({ charset: this.value as string });
+          setMockEndpointState({ charset: this.value as string });
         }}
       />
       <LabeledTextarea
         label='HTTP Headers'
-        value={responseState.headers}
+        value={mockEndpointState.httpHeaders}
         onChange={function (
           this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
         ) {
-          setResponseState({ headers: this.value as string });
+          setMockEndpointState({ httpHeaders: this.value as string });
         }}
         rows={3}
       />
       <LabeledTextarea
         label='HTTP Response Body'
-        value={responseState.body}
+        value={mockEndpointState.httpResponseBody}
         onChange={function (
           this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
         ) {
-          setResponseState({ body: this.value as string });
+          setMockEndpointState({ httpResponseBody: this.value as string });
         }}
         rows={8}
       />
       <LabeledInput
         label='Timeout'
-        value={responseState.timeout}
+        value={mockEndpointState.timeout}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          setResponseState({ timeout: this.value as string });
+          setMockEndpointState({ timeout: this.value as string });
         }}
         suffix='ms'
         description='Set timeout for response.'
         errorMessage={timeoutErrorMessage()}
       />
       <SaveButtonWrapper>
-        <SaveButton
-          onClick={async () => {
-            console.log(responseState);
-            const res = await fetch('http://localhost:4000/users');
-            const response = await res.json();
-            console.log(response);
-          }}
-        />
+        <SaveButton user={props.user} data={mockEndpointState} />
       </SaveButtonWrapper>
     </>
   );
 };
 
-const Main = () => {
+interface MainProps {
+  user: User | null;
+}
+
+const Main = (props: MainProps) => {
   return (
     <Wrapper hasMargin={!isViewportNarrow()}>
       <ContentWrapper>
-        <ServerSettingsForm />
+        <ServerSettingsForm user={props.user} />
       </ContentWrapper>
     </Wrapper>
   );
