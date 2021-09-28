@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js';
 
-import { MOBILE_VIEWPORT_BREAKPOINT } from './constants';
+import { MOBILE_VIEWPORT_BREAKPOINT } from '../constants';
 
 export const [isViewportNarrow, setIsViewportNarrow] = createSignal(
   window.innerWidth < MOBILE_VIEWPORT_BREAKPOINT

@@ -2,7 +2,11 @@ import { onMount, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
-import { isHamburgerActive, isViewportNarrow, setIsViewportNarrow } from '../../store';
+import {
+  isHamburgerActive,
+  isViewportNarrow,
+  setIsViewportNarrow,
+} from '../../store';
 import { User } from '../../types';
 import Header from './Header';
 import MainContent from './MainContent';

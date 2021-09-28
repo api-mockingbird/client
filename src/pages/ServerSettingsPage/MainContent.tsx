@@ -1,5 +1,5 @@
 import { gql } from '@urql/core';
-import { createSignal, JSX } from 'solid-js';
+import { JSX, createSignal, createEffect } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { styled } from 'solid-styled-components';
 import { createMutation } from 'solid-urql';
@@ -7,6 +7,7 @@ import { createMutation } from 'solid-urql';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import { isViewportNarrow } from '../../store';
 import { User } from '../../types';
+import CopyIcon from './CopyIcon';
 import LabeledInput from './LabeledInput';
 import LabeledSelect from './LabeledSelect';
 import LabeledTextarea from './LabeledTextarea';
@@ -58,6 +59,7 @@ const createMockEndpointMutation = gql`
 `;
 
 const ServerSettingsForm = (props: ServerSettingsFormProps) => {
+  const [baseUrl, setBaseUrl] = createSignal('');
   const [nameErrorMessage, setNameErrorMessage] = createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
   const [endpointErrorMessage, setEndpointErrorMessage] = createSignal('');
@@ -72,7 +74,16 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     httpResponseBody: '',
     timeout: '',
   });
-  const [state, executeMutation] = createMutation(createMockEndpointMutation);
+  const [state, createMockEndpoint] = createMutation(
+    createMockEndpointMutation
+  );
+
+  createEffect(() => {
+    const subdomain = props.user?.id;
+    setBaseUrl(
+      `${subdomain ? `http://${subdomain}.${import.meta.env.VITE_DOMAIN}` : ''}`
+    );
+  });
 
   const handleSaveClick = async () => {
     // validate fields
@@ -82,7 +93,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       timeout: Number(mockEndpointState.timeout),
     };
 
-    const res = await executeMutation({
+    const res = await createMockEndpoint({
       createMockInputData: requestData,
       createMockInputUserId: props.user!.id,
     });
@@ -90,8 +101,22 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     console.log(res);
   };
 
+  const handleCopyIconClick = async () => {
+    await navigator.clipboard.writeText(baseUrl());
+    alert(`Base URL (${baseUrl()}) saved to clipboard.`);
+  };
+
   return (
     <>
+      <LabeledInput
+        label='Base URL'
+        value={baseUrl()}
+        suffix={() => CopyIcon({ onClick: handleCopyIconClick })}
+        description={
+          props.user?.isTemp ? 'Expires in 1 hour after first login' : ''
+        }
+        readonly
+      />
       <LabeledInput
         label='Response Name*'
         value={mockEndpointState.responseName}
