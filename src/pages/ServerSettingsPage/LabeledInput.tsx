@@ -1,3 +1,4 @@
+import { JSX } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import InputFieldWrapper from './InputFieldWrapper';
@@ -19,11 +20,12 @@ const Message = styled('div')<MessageProps>(
 interface LabeledInputProps {
   label: string;
   value: string;
-  onChange: () => void;
+  onChange?: () => void;
   description: string;
-  errorMessage: string;
+  errorMessage?: string;
   placeholder?: string;
-  suffix?: string;
+  suffix?: string | JSX.Element;
+  readonly?: boolean;
 }
 
 const LabeledInput = (props: LabeledInputProps) => {
@@ -35,6 +37,7 @@ const LabeledInput = (props: LabeledInputProps) => {
         onChange={props.onChange}
         placeholder={props.placeholder}
         suffix={props.suffix}
+        readOnly={props.readonly}
       />
       <Message isRed={!!props.errorMessage}>
         {props.errorMessage || props.description}

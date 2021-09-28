@@ -1,6 +1,8 @@
 import { JSX, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
+import { CopyIconProps } from '../pages/ServerSettingsPage/CopyIcon';
+
 const Wrapper = styled('div')`
   position: relative;
   width: 100%;
@@ -35,8 +37,8 @@ const Suffix = styled('span')`
 `;
 
 export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
-  onChange: () => void;
-  suffix?: string;
+  onChange?: () => void;
+  suffix?: string | JSX.Element;
 }
 
 const Input = (props: InputProps) => {
@@ -48,6 +50,7 @@ const Input = (props: InputProps) => {
         onChange={props.onChange}
         placeholder={props.placeholder}
         hasSuffix={!!props.suffix}
+        readOnly={props.readOnly}
       />
       <Show when={props.suffix}>
         <Suffix>{props.suffix}</Suffix>

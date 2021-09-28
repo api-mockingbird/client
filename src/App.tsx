@@ -9,16 +9,8 @@ const userQuery = gql`
       id
       mockEndpoints {
         id
-        userId
         responseName
         httpMethod
-        urlPath
-        httpStatus
-        responseContentType
-        httpHeaders
-        charset
-        httpResponseBody
-        timeout
       }
       isTemp
     }
