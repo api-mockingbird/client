@@ -172,7 +172,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
           { value: 500, text: '500 - Internal Server Error' },
           { value: 502, text: '502 - Bad Gateway' },
           { value: 503, text: '503 - Service Unavailable' },
-          { value: 504, text: '504 - Gateway Timeount' },
+          { value: 504, text: '504 - Gateway Timeout' },
         ]}
         preSelectedValue={mockEndpointState.httpStatus}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
