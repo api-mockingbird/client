@@ -31,7 +31,7 @@ const ContentWrapper = styled('div')`
   padding: 1.5rem 1.5rem 6rem;
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT_BREAKPOINT}px) {
-    max-width: 40rem;
+    max-width: 50rem;
   }
 `;
 
@@ -59,10 +59,13 @@ const createMockEndpointMutation = gql`
 `;
 
 const ServerSettingsForm = (props: ServerSettingsFormProps) => {
+  const [isNew, setIsNew] = createSignal(true);
   const [baseUrl, setBaseUrl] = createSignal('');
   const [nameErrorMessage, setNameErrorMessage] = createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
   const [endpointErrorMessage, setEndpointErrorMessage] = createSignal('');
+  const [httpHeadersErrorMessage, setHttpHeadersErrorMessage] =
+    createSignal('');
   const [mockEndpointState, setMockEndpointState] = createStore({
     responseName: '',
     httpMethod: 'GET',
@@ -81,7 +84,9 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   createEffect(() => {
     const subdomain = props.user?.id;
     setBaseUrl(
-      `${subdomain ? `http://${subdomain}.${import.meta.env.VITE_DOMAIN}` : ''}`
+      `${
+        subdomain ? `https://${subdomain}.${import.meta.env.VITE_DOMAIN}` : ''
+      }`
     );
   });
 
@@ -113,7 +118,9 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         value={baseUrl()}
         suffix={() => CopyIcon({ onClick: handleCopyIconClick })}
         description={
-          props.user?.isTemp ? 'Expires in 1 hour after first login' : ''
+          props.user?.isTemp
+            ? 'Expires in 1 hour. Sign up for persistence.'
+            : ''
         }
         readonly
       />
@@ -134,6 +141,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
           { value: 'PUT', text: 'PUT' },
           { value: 'PATCH', text: 'PATCH' },
           { value: 'DELETE', text: 'DELETE' },
+          { value: 'OPTIONS', text: 'OPTIONS' },
         ]}
         preSelectedValue={mockEndpointState.httpMethod}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
@@ -148,7 +156,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         }}
         description='Do not include hostname.'
         errorMessage={endpointErrorMessage()}
-        placeholder='/api/users'
+        placeholder='/api/users/1'
       />
       <LabeledSelect
         label='HTTP Status*'
@@ -201,6 +209,9 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         ) {
           setMockEndpointState({ httpHeaders: this.value as string });
         }}
+        description='Set as JSON object.'
+        errorMessage={httpHeadersErrorMessage()}
+        placeholder='{\n  "X-Foo-Bar": "Hello Mockingbird"\n}'
         rows={3}
       />
       <LabeledTextarea
@@ -211,6 +222,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         ) {
           setMockEndpointState({ httpResponseBody: this.value as string });
         }}
+        placeholder='{\n  "id": 1,\n  "name": "John Doe",\n  "role": "ADMIN"\n}'
         rows={8}
       />
       <LabeledInput
