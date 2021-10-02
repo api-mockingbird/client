@@ -54,6 +54,18 @@ const GlobalStyles = () => {
         cursor: not-allowed;
       }
     }
+
+    ul,
+    ol,
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul,
+    ol {
+      list-style: none;
+    }
   `;
 
   return <Styles />;
