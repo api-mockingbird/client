@@ -1,17 +1,20 @@
-import { gql } from '@urql/core';
-import { JSX, createSignal, createEffect } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { createEffect, createSignal, JSX } from 'solid-js';
 import { styled } from 'solid-styled-components';
-import { createMutation } from 'solid-urql';
 
+import client from '../../api/client';
+import {
+  createMockEndpointMutation,
+  updateMockEndpointMutation,
+} from '../../api/query-documents';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import { isViewportNarrow } from '../../store';
 import { User } from '../../types';
-import CopyIcon from './CopyIcon';
-import LabeledInput from './LabeledInput';
-import LabeledSelect from './LabeledSelect';
-import LabeledTextarea from './LabeledTextarea';
-import SaveButton from './SaveButton';
+import { MockEndpointInput } from '../../types';
+import CopyIcon from '../../components/CopyIcon';
+import LabeledInput from '../../components/LabeledInput';
+import LabeledSelect from '../../components/LabeledSelect';
+import LabeledTextarea from '../../components/LabeledTextarea';
+import SaveButton from '../../components/SaveButton';
 
 interface WrapperProps {
   hasMargin: boolean;
@@ -42,47 +45,23 @@ const SaveButtonWrapper = styled('div')`
 
 interface ServerSettingsFormProps {
   user: User | null;
+  currentMockEndpointId: number;
+  setCurrentMockEndpointId: (id: number) => void;
+  mockEndpointInput: MockEndpointInput;
+  setMockEndpointInput: ({}) => void;
 }
 
-const createMockEndpointMutation = gql`
-  mutation (
-    $createMockInputData: MockEndpointCreateInput!
-    $createMockInputUserId: String!
-  ) {
-    createMockInput(
-      data: $createMockInputData
-      userId: $createMockInputUserId
-    ) {
-      id
-    }
-  }
-`;
-
 const ServerSettingsForm = (props: ServerSettingsFormProps) => {
-  const [isNew, setIsNew] = createSignal(true);
   const [baseUrl, setBaseUrl] = createSignal('');
   const [nameErrorMessage, setNameErrorMessage] = createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
   const [endpointErrorMessage, setEndpointErrorMessage] = createSignal('');
   const [httpHeadersErrorMessage, setHttpHeadersErrorMessage] =
     createSignal('');
-  const [mockEndpointState, setMockEndpointState] = createStore({
-    responseName: '',
-    httpMethod: 'GET',
-    urlPath: '',
-    httpStatus: 200,
-    responseContentType: 'application/json',
-    charset: 'UTF-8',
-    httpHeaders: '',
-    httpResponseBody: '',
-    timeout: '',
-  });
-  const [state, createMockEndpoint] = createMutation(
-    createMockEndpointMutation
-  );
 
   createEffect(() => {
     const subdomain = props.user?.id;
+
     setBaseUrl(
       `${
         subdomain ? `https://${subdomain}.${import.meta.env.VITE_DOMAIN}` : ''
@@ -90,20 +69,50 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     );
   });
 
+  const createMockEndpoint = () => {
+    const data = {
+      ...props.mockEndpointInput,
+      timeout: Number(props.mockEndpointInput.timeout),
+    };
+
+    return client
+      .mutation(
+        createMockEndpointMutation,
+        {
+          createMockEndpointData: data,
+          createMockEndpointUserId: props.user!.id,
+        },
+        {
+          additionalTypenames: ['User'],
+        }
+      )
+      .toPromise();
+  };
+
+  const updateMockEndpoint = () => {
+    const data = {
+      id: props.currentMockEndpointId,
+      ...props.mockEndpointInput,
+      timeout: Number(props.mockEndpointInput.timeout),
+    };
+
+    return client
+      .mutation(updateMockEndpointMutation, {
+        updateMockEndpointData: data,
+        updateMockEndpointUserId: props.user!.id,
+      })
+      .toPromise();
+  };
+
   const handleSaveClick = async () => {
     // validate fields
 
-    const requestData = {
-      ...mockEndpointState,
-      timeout: Number(mockEndpointState.timeout),
-    };
+    const isNew = props.currentMockEndpointId === -1;
+    const res = isNew ? await createMockEndpoint() : await updateMockEndpoint();
 
-    const res = await createMockEndpoint({
-      createMockInputData: requestData,
-      createMockInputUserId: props.user!.id,
-    });
-
-    console.log(res);
+    if (!res.error && isNew) {
+      props.setCurrentMockEndpointId(res.data.createMockEndpoint.id);
+    }
   };
 
   const handleCopyIconClick = async () => {
@@ -125,10 +134,10 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         readonly
       />
       <LabeledInput
-        label='Response Name*'
-        value={mockEndpointState.responseName}
+        label='Endpoint Name*'
+        value={props.mockEndpointInput.endpointName}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          setMockEndpointState({ responseName: this.value as string });
+          props.setMockEndpointInput({ endpointName: this.value as string });
         }}
         description='Unique name of endpoint.'
         errorMessage={nameErrorMessage()}
@@ -143,16 +152,16 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
           { value: 'DELETE', text: 'DELETE' },
           { value: 'OPTIONS', text: 'OPTIONS' },
         ]}
-        preSelectedValue={mockEndpointState.httpMethod}
+        preSelectedValue={props.mockEndpointInput.httpMethod}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setMockEndpointState({ httpMethod: this.value as string });
+          props.setMockEndpointInput({ httpMethod: this.value as string });
         }}
       />
       <LabeledInput
         label='URL Path*'
-        value={mockEndpointState.urlPath}
+        value={props.mockEndpointInput.urlPath}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          setMockEndpointState({ urlPath: this.value as string });
+          props.setMockEndpointInput({ urlPath: this.value as string });
         }}
         description='Do not include hostname.'
         errorMessage={endpointErrorMessage()}
@@ -174,9 +183,9 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
           { value: 503, text: '503 - Service Unavailable' },
           { value: 504, text: '504 - Gateway Timeout' },
         ]}
-        preSelectedValue={mockEndpointState.httpStatus}
+        preSelectedValue={props.mockEndpointInput.httpStatus}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setMockEndpointState({ httpStatus: Number(this.value) });
+          props.setMockEndpointInput({ httpStatus: Number(this.value) });
         }}
       />
       <LabeledSelect
@@ -188,26 +197,28 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
             text: 'application/x-www-form-urlencoded',
           },
         ]}
-        preSelectedValue={mockEndpointState.responseContentType}
+        preSelectedValue={props.mockEndpointInput.responseContentType}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setMockEndpointState({ responseContentType: this.value as string });
+          props.setMockEndpointInput({
+            responseContentType: this.value as string,
+          });
         }}
       />
       <LabeledSelect
         label='Charset*'
         options={[{ value: 'UTF-8', text: 'UTF-8' }]}
-        preSelectedValue={mockEndpointState.charset}
+        preSelectedValue={props.mockEndpointInput.charset}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
-          setMockEndpointState({ charset: this.value as string });
+          props.setMockEndpointInput({ charset: this.value as string });
         }}
       />
       <LabeledTextarea
         label='HTTP Headers'
-        value={mockEndpointState.httpHeaders}
+        value={props.mockEndpointInput.httpHeaders}
         onChange={function (
           this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
         ) {
-          setMockEndpointState({ httpHeaders: this.value as string });
+          props.setMockEndpointInput({ httpHeaders: this.value as string });
         }}
         description='Set as JSON object.'
         errorMessage={httpHeadersErrorMessage()}
@@ -216,20 +227,22 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       />
       <LabeledTextarea
         label='HTTP Response Body'
-        value={mockEndpointState.httpResponseBody}
+        value={props.mockEndpointInput.httpResponseBody}
         onChange={function (
           this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
         ) {
-          setMockEndpointState({ httpResponseBody: this.value as string });
+          props.setMockEndpointInput({
+            httpResponseBody: this.value as string,
+          });
         }}
         placeholder='{\n  "id": 1,\n  "name": "John Doe",\n  "role": "ADMIN"\n}'
         rows={8}
       />
       <LabeledInput
         label='Timeout'
-        value={mockEndpointState.timeout}
+        value={props.mockEndpointInput.timeout}
         onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          setMockEndpointState({ timeout: this.value as string });
+          props.setMockEndpointInput({ timeout: this.value as string });
         }}
         suffix='ms'
         description='Set timeout for response.'
@@ -244,13 +257,23 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
 
 interface MainProps {
   user: User | null;
+  currentMockEndpointId: number;
+  setCurrentMockEndpointId: (id: number) => void;
+  mockEndpointInput: MockEndpointInput;
+  setMockEndpointInput: ({}) => void;
 }
 
 const Main = (props: MainProps) => {
   return (
     <Wrapper hasMargin={!isViewportNarrow()}>
       <ContentWrapper>
-        <ServerSettingsForm user={props.user} />
+        <ServerSettingsForm
+          user={props.user}
+          currentMockEndpointId={props.currentMockEndpointId}
+          setCurrentMockEndpointId={props.setCurrentMockEndpointId}
+          mockEndpointInput={props.mockEndpointInput}
+          setMockEndpointInput={props.setMockEndpointInput}
+        />
       </ContentWrapper>
     </Wrapper>
   );

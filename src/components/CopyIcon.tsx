@@ -1,5 +1,6 @@
 import { styled } from 'solid-styled-components';
-import CopyToClipboard from '../../icons/CopyToClipboard';
+
+import CopyToClipboard from '../icons/CopyToClipboard';
 
 const Wrapper = styled('span')`
   display: flex;

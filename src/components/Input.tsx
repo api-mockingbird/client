@@ -1,8 +1,6 @@
 import { JSX, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-import { CopyIconProps } from '../pages/ServerSettingsPage/CopyIcon';
-
 const Wrapper = styled('div')`
   position: relative;
   width: 100%;

@@ -1,6 +1,15 @@
-import InputFieldWrapper from './InputFieldWrapper';
-import Select from '../../components/Select';
-import StyledLabel from './Label';
+import { styled } from 'solid-styled-components';
+
+import Select from './Select';
+
+const Wrapper = styled('div')`
+  margin-bottom: 1.6rem;
+`;
+
+const StyledLabel = styled('div')`
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+`;
 
 type OptionValue = string | number;
 
@@ -13,14 +22,14 @@ interface LabeledSelectProps {
 
 const LabeledSelect = (props: LabeledSelectProps) => {
   return (
-    <InputFieldWrapper>
+    <Wrapper>
       <StyledLabel>{props.label}</StyledLabel>
       <Select
         onChange={props.onChange}
         options={props.options}
         preSelectedValue={props.preSelectedValue}
       />
-    </InputFieldWrapper>
+    </Wrapper>
   );
 };
 
