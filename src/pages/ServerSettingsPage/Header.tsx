@@ -1,7 +1,7 @@
 import { Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-import Hamburger from './Hamburger';
+import Hamburger from '../../components/Hamburger';
 import Button from '../../components/Button';
 import { isViewportNarrow } from '../../store';
 

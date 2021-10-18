@@ -1,8 +1,15 @@
 import { styled } from 'solid-styled-components';
 
-import InputFieldWrapper from './InputFieldWrapper';
-import Textarea from '../../components/Textarea';
-import StyledLabel from './Label';
+import Textarea from './Textarea';
+
+const Wrapper = styled('div')`
+  margin-bottom: 1.6rem;
+`;
+
+const StyledLabel = styled('div')`
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+`;
 
 interface MessageProps {
   isRed: boolean;
@@ -28,7 +35,7 @@ interface LabeledTextareaProps {
 
 const LabeledTextarea = (props: LabeledTextareaProps) => {
   return (
-    <InputFieldWrapper>
+    <Wrapper>
       <StyledLabel>{props.label}</StyledLabel>
       <Textarea
         value={props.value}
@@ -39,7 +46,7 @@ const LabeledTextarea = (props: LabeledTextareaProps) => {
       <Message isRed={!!props.errorMessage}>
         {props.errorMessage || props.description}
       </Message>
-    </InputFieldWrapper>
+    </Wrapper>
   );
 };
 
