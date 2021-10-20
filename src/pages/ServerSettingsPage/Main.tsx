@@ -118,7 +118,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     initErrors();
 
     const validationResult = validateInput(props.mockEndpointInput);
-    console.log(validationResult);
+
     if (Object.keys(validationResult).length) {
       setClientValidationErrors(
         validationResult,
@@ -127,8 +127,10 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         setHttpHeadersErrorMessage,
         setTimeoutErrorMessage
       );
+
+      return;
     }
-    return;
+
     const isNew = props.currentMockEndpointId === -1;
     const res = isNew ? await createMockEndpoint() : await updateMockEndpoint();
 
