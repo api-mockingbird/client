@@ -8,6 +8,7 @@ const Wrapper = styled('div')`
 
 interface StyledInputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   hasSuffix: boolean;
+  borderColor?: string;
 }
 
 const StyledInput = styled('input')<StyledInputProps>(
@@ -16,7 +17,7 @@ const StyledInput = styled('input')<StyledInputProps>(
     height: 4rem;
     padding: ${props.hasSuffix ? '1rem 4rem 1rem 1.2rem' : '1rem 1.2rem'};
     font-size: 1.4rem;
-    border: 1px solid black;
+    border: 1px solid ${props.borderColor || 'black'};
     border-radius: 5px;
   `
 );
@@ -35,8 +36,9 @@ const Suffix = styled('span')`
 `;
 
 export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
-  onChange?: () => void;
+  onInput?: (event: Event) => void;
   suffix?: string | JSX.Element;
+  borderColor?: string;
 }
 
 const Input = (props: InputProps) => {
@@ -45,9 +47,10 @@ const Input = (props: InputProps) => {
       <StyledInput
         type={props.type || 'text'}
         value={props.value}
-        onChange={props.onChange}
+        onInput={props.onInput}
         placeholder={props.placeholder}
         hasSuffix={!!props.suffix}
+        borderColor={props.borderColor}
         readOnly={props.readOnly}
       />
       <Show when={props.suffix}>

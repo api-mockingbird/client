@@ -8,6 +8,8 @@ import {
 import { createStore } from 'solid-js/store';
 import { styled } from 'solid-styled-components';
 
+import client from '../../api/client';
+import { getMockEndpointQuery } from '../../api/query-documents';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import {
   isHamburgerActive,
@@ -15,11 +17,9 @@ import {
   setIsViewportNarrow,
 } from '../../store';
 import { MockEndpointInput, User } from '../../types';
-import client from '../../api/client';
 import Header from './Header';
 import Main from './Main';
 import Sidebar from './Sidebar';
-import { getMockEndpointQuery } from '../../api/query-documents';
 
 const BodyWrapper = styled('div')`
   display: flex;

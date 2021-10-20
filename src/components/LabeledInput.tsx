@@ -27,11 +27,12 @@ const Message = styled('div')<MessageProps>(
 interface LabeledInputProps {
   label: string;
   value: string;
-  onChange?: () => void;
-  description: string;
+  onInput?: (event: Event) => void;
+  description?: string;
   errorMessage?: string;
   placeholder?: string;
   suffix?: string | JSX.Element;
+  borderColor?: string;
   readonly?: boolean;
 }
 
@@ -41,9 +42,10 @@ const LabeledInput = (props: LabeledInputProps) => {
       <StyledLabel>{props.label}</StyledLabel>
       <Input
         value={props.value}
-        onChange={props.onChange}
+        onInput={props.onInput}
         placeholder={props.placeholder}
         suffix={props.suffix}
+        borderColor={props.borderColor}
         readOnly={props.readonly}
       />
       <Message isRed={!!props.errorMessage}>

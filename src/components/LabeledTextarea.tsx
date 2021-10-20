@@ -26,11 +26,12 @@ const Message = styled('div')<MessageProps>(
 interface LabeledTextareaProps {
   label: string;
   value: string;
-  onChange: () => void;
+  onInput: (event: Event) => void;
   placeholder?: string;
   rows?: number;
   description?: string;
   errorMessage?: string;
+  borderColor?: string;
 }
 
 const LabeledTextarea = (props: LabeledTextareaProps) => {
@@ -40,8 +41,9 @@ const LabeledTextarea = (props: LabeledTextareaProps) => {
       <Textarea
         value={props.value}
         placeholder={props.placeholder}
-        onChange={props.onChange}
+        onInput={props.onInput}
         rows={props.rows}
+        borderColor={props.borderColor}
       />
       <Message isRed={!!props.errorMessage}>
         {props.errorMessage || props.description}
