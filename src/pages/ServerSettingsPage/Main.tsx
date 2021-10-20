@@ -6,15 +6,17 @@ import {
   createMockEndpointMutation,
   updateMockEndpointMutation,
 } from '../../api/query-documents';
-import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
-import { isViewportNarrow } from '../../store';
-import { User } from '../../types';
-import { MockEndpointInput } from '../../types';
 import CopyIcon from '../../components/CopyIcon';
 import LabeledInput from '../../components/LabeledInput';
 import LabeledSelect from '../../components/LabeledSelect';
 import LabeledTextarea from '../../components/LabeledTextarea';
 import SaveButton from '../../components/SaveButton';
+import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
+import { isViewportNarrow } from '../../store';
+import { User } from '../../types';
+import { MockEndpointInput } from '../../types';
+import setClientValidationErrors from '../../utils/setClientValidationErrors';
+import validateInput from '../../utils/validateInput';
 
 interface WrapperProps {
   hasMargin: boolean;
@@ -53,11 +55,12 @@ interface ServerSettingsFormProps {
 
 const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   const [baseUrl, setBaseUrl] = createSignal('');
-  const [nameErrorMessage, setNameErrorMessage] = createSignal('');
-  const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
-  const [endpointErrorMessage, setEndpointErrorMessage] = createSignal('');
+  const [endpointNameErrorMessage, setEndpointNameErrorMessage] =
+    createSignal('');
+  const [urlPathErrorMessage, setUrlPathErrorMessage] = createSignal('');
   const [httpHeadersErrorMessage, setHttpHeadersErrorMessage] =
     createSignal('');
+  const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
 
   createEffect(() => {
     const subdomain = props.user?.id;
@@ -104,13 +107,40 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       .toPromise();
   };
 
+  const initErrors = () => {
+    setEndpointNameErrorMessage('');
+    setUrlPathErrorMessage('');
+    setHttpHeadersErrorMessage('');
+    setTimeoutErrorMessage('');
+  };
+
   const handleSaveClick = async () => {
-    // validate fields
+    initErrors();
+
+    const validationResult = validateInput(props.mockEndpointInput);
+
+    if (Object.keys(validationResult).length) {
+      setClientValidationErrors(
+        validationResult,
+        setEndpointNameErrorMessage,
+        setUrlPathErrorMessage,
+        setHttpHeadersErrorMessage,
+        setTimeoutErrorMessage
+      );
+
+      return;
+    }
 
     const isNew = props.currentMockEndpointId === -1;
     const res = isNew ? await createMockEndpoint() : await updateMockEndpoint();
 
-    if (!res.error && isNew) {
+    if (res.error) {
+      // set errors
+
+      return;
+    }
+
+    if (isNew) {
       props.setCurrentMockEndpointId(res.data.createMockEndpoint.id);
     }
   };
@@ -136,11 +166,15 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       <LabeledInput
         label='Endpoint Name*'
         value={props.mockEndpointInput.endpointName}
-        onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          props.setMockEndpointInput({ endpointName: this.value as string });
+        onInput={(event: Event) => {
+          setEndpointNameErrorMessage('');
+          props.setMockEndpointInput({
+            endpointName: (event.target as HTMLInputElement).value,
+          });
         }}
-        description='Unique name of endpoint.'
-        errorMessage={nameErrorMessage()}
+        description='A descriptive name.'
+        errorMessage={endpointNameErrorMessage()}
+        borderColor={endpointNameErrorMessage() && 'red'}
       />
       <LabeledSelect
         label='HTTP Method*'
@@ -160,11 +194,15 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       <LabeledInput
         label='URL Path*'
         value={props.mockEndpointInput.urlPath}
-        onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          props.setMockEndpointInput({ urlPath: this.value as string });
+        onInput={(event: Event) => {
+          setUrlPathErrorMessage('');
+          props.setMockEndpointInput({
+            urlPath: (event.target as HTMLInputElement).value,
+          });
         }}
         description='Do not include hostname.'
-        errorMessage={endpointErrorMessage()}
+        errorMessage={urlPathErrorMessage()}
+        borderColor={urlPathErrorMessage() && 'red'}
         placeholder='/api/users/1'
       />
       <LabeledSelect
@@ -215,24 +253,24 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       <LabeledTextarea
         label='HTTP Headers'
         value={props.mockEndpointInput.httpHeaders}
-        onChange={function (
-          this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
-        ) {
-          props.setMockEndpointInput({ httpHeaders: this.value as string });
+        onInput={(event: Event) => {
+          setHttpHeadersErrorMessage('');
+          props.setMockEndpointInput({
+            httpHeaders: (event.target as HTMLTextAreaElement).value,
+          });
         }}
         description='Set as JSON object.'
         errorMessage={httpHeadersErrorMessage()}
+        borderColor={httpHeadersErrorMessage() && 'red'}
         placeholder='{\n  "X-Foo-Bar": "Hello Mockingbird"\n}'
         rows={3}
       />
       <LabeledTextarea
         label='HTTP Response Body'
         value={props.mockEndpointInput.httpResponseBody}
-        onChange={function (
-          this: JSX.TextareaHTMLAttributes<HTMLTextAreaElement>
-        ) {
+        onInput={(event: Event) => {
           props.setMockEndpointInput({
-            httpResponseBody: this.value as string,
+            httpResponseBody: (event.target as HTMLTextAreaElement).value,
           });
         }}
         placeholder='{\n  "id": 1,\n  "name": "John Doe",\n  "role": "ADMIN"\n}'
@@ -241,12 +279,16 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       <LabeledInput
         label='Timeout'
         value={props.mockEndpointInput.timeout}
-        onChange={function (this: JSX.InputHTMLAttributes<HTMLInputElement>) {
-          props.setMockEndpointInput({ timeout: this.value as string });
+        onInput={(event: Event) => {
+          setTimeoutErrorMessage('');
+          props.setMockEndpointInput({
+            timeout: (event.target as HTMLInputElement).value,
+          });
         }}
         suffix='ms'
         description='Set timeout for response.'
         errorMessage={timeoutErrorMessage()}
+        borderColor={timeoutErrorMessage() && 'red'}
       />
       <SaveButtonWrapper>
         <SaveButton onClick={handleSaveClick} />

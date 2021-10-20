@@ -1,8 +1,8 @@
 import { Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-import Hamburger from '../../components/Hamburger';
 import Button from '../../components/Button';
+import Hamburger from '../../components/Hamburger';
 import { isViewportNarrow } from '../../store';
 
 const Wrapper = styled('header')`
