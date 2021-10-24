@@ -10,7 +10,23 @@ const App = () => {
 
   pipe(
     client.query(userQuery),
-    subscribe(res => setUser(res.data.getUser))
+    subscribe(res => {
+      if (res.error) {
+        const errors = res.error.graphQLErrors;
+
+        switch (errors[0].message) {
+          case 'Context creation failed: Unauthenticated':
+            alert('Authentication failed.');
+            break;
+          default:
+            alert('Internal Server Error.');
+        }
+
+        return;
+      }
+
+      setUser(res.data.getUser);
+    })
   );
 
   return <ServerSettingsPage user={user()} />;

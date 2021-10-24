@@ -7,15 +7,17 @@ const Container = styled('div')`
   cursor: pointer;
 `;
 interface StyledSelectProps
-  extends JSX.SelectHTMLAttributes<HTMLSelectElement> {}
+  extends JSX.SelectHTMLAttributes<HTMLSelectElement> {
+  borderColor?: string;
+}
 
 const StyledSelect = styled('select')<StyledSelectProps>(
-  () => `
+  props => `
     width: 100%;
     height: 4rem;
     padding: 1rem 3.4rem 1rem 1.2rem;
     font-size: 1.4rem;
-    border: 1px solid black;
+    border: 1px solid ${props.borderColor || 'black'};
     border-radius: 5px;
     appearance: none;
     -webkit-appearance: none;
@@ -59,12 +61,13 @@ interface SelectProps {
   options: { value: OptionValue; text: string }[];
   preSelectedValue?: OptionValue;
   onChange: (ev: Event) => void;
+  borderColor?: string;
 }
 
 const Select = (props: SelectProps) => {
   return (
     <Container>
-      <StyledSelect onChange={props.onChange}>
+      <StyledSelect onChange={props.onChange} borderColor={props.borderColor}>
         <For each={props.options}>
           {option => (
             <option

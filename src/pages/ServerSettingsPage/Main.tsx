@@ -15,6 +15,7 @@ import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import { isViewportNarrow } from '../../store';
 import { User } from '../../types';
 import { MockEndpointInput } from '../../types';
+import handleServerErrors from '../../utils/handleServerErrorsOnSave';
 import setClientValidationErrors from '../../utils/setClientValidationErrors';
 import validateInput from '../../utils/validateInput';
 
@@ -57,10 +58,16 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   const [baseUrl, setBaseUrl] = createSignal('');
   const [endpointNameErrorMessage, setEndpointNameErrorMessage] =
     createSignal('');
+  const [httpMethodErrorMessage, setHttpMethodErrorMessage] = createSignal('');
   const [urlPathErrorMessage, setUrlPathErrorMessage] = createSignal('');
   const [httpHeadersErrorMessage, setHttpHeadersErrorMessage] =
     createSignal('');
   const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
+  const [isNew, setIsNew] = createSignal(true);
+
+  createEffect(() => {
+    setIsNew(props.currentMockEndpointId === -1);
+  });
 
   createEffect(() => {
     const subdomain = props.user?.id;
@@ -109,6 +116,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
 
   const initErrors = () => {
     setEndpointNameErrorMessage('');
+    setHttpMethodErrorMessage('');
     setUrlPathErrorMessage('');
     setHttpHeadersErrorMessage('');
     setTimeoutErrorMessage('');
@@ -120,27 +128,30 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     const validationResult = validateInput(props.mockEndpointInput);
 
     if (Object.keys(validationResult).length) {
-      setClientValidationErrors(
-        validationResult,
+      setClientValidationErrors(validationResult, {
         setEndpointNameErrorMessage,
         setUrlPathErrorMessage,
         setHttpHeadersErrorMessage,
-        setTimeoutErrorMessage
-      );
+        setTimeoutErrorMessage,
+      });
 
       return;
     }
 
-    const isNew = props.currentMockEndpointId === -1;
-    const res = isNew ? await createMockEndpoint() : await updateMockEndpoint();
+    const res = isNew()
+      ? await createMockEndpoint()
+      : await updateMockEndpoint();
 
     if (res.error) {
-      // set errors
+      handleServerErrors(res.error.graphQLErrors, {
+        setHttpMethodErrorMessage,
+        setUrlPathErrorMessage,
+      });
 
       return;
     }
 
-    if (isNew) {
+    if (isNew()) {
       props.setCurrentMockEndpointId(res.data.createMockEndpoint.id);
     }
   };
@@ -188,8 +199,11 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         ]}
         preSelectedValue={props.mockEndpointInput.httpMethod}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
+          setHttpMethodErrorMessage('');
           props.setMockEndpointInput({ httpMethod: this.value as string });
         }}
+        errorMessage={httpMethodErrorMessage()}
+        borderColor={httpMethodErrorMessage() && 'red'}
       />
       <LabeledInput
         label='URL Path*'
@@ -273,6 +287,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
             httpResponseBody: (event.target as HTMLTextAreaElement).value,
           });
         }}
+        description='If parsing into JSON is possible response body will be returned in JSON format. Otherwise plain string.'
         placeholder='{\n  "id": 1,\n  "name": "John Doe",\n  "role": "ADMIN"\n}'
         rows={8}
       />
@@ -291,7 +306,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         borderColor={timeoutErrorMessage() && 'red'}
       />
       <SaveButtonWrapper>
-        <SaveButton onClick={handleSaveClick} />
+        <SaveButton onClick={handleSaveClick} isNew={isNew()} />
       </SaveButtonWrapper>
     </>
   );
