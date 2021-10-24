@@ -124,11 +124,17 @@ const Sidebar = (props: SidebarProps) => {
             const handleRemoveMockEndpoint = async (event: Event) => {
               event.stopPropagation();
 
-              await client
+              const res = await client
                 .mutation(removeMockEndpointMutation, {
                   removeMockEndpointData: endpoint.id,
                 })
                 .toPromise();
+
+              if (res.error) {
+                alert('Error');
+
+                return;
+              }
 
               props.setCurrentMockEndpointId(-1);
             };

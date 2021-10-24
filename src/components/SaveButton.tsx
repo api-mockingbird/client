@@ -2,6 +2,7 @@ import Button from './Button';
 
 interface SaveButtonProps {
   onClick: () => void;
+  isNew: boolean;
 }
 
 const SaveButton = (props: SaveButtonProps) => {
@@ -13,7 +14,7 @@ const SaveButton = (props: SaveButtonProps) => {
       backgroundColor='#2e5cf2'
       onClick={props.onClick}
     >
-      Save
+      {props.isNew ? 'Save' : 'Update'}
     </Button>
   );
 };

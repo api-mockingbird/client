@@ -18,7 +18,7 @@ interface MessageProps {
 const Message = styled('div')<MessageProps>(
   props => `
     margin-top: 0.4rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: ${props.isRed ? 'red' : 'black'};
   `
 );

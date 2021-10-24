@@ -9,6 +9,8 @@ const validateInput = (mockEndpointInput: MockEndpointInput) => {
 
   if (!mockEndpointInput.urlPath) {
     errorInfo.urlPath = 'EMPTY';
+  } else if (mockEndpointInput.urlPath[0] !== '/') {
+    errorInfo.urlPath = 'FIRST_CHAR_NOT_SLASH';
   }
 
   if (mockEndpointInput.httpHeaders) {
