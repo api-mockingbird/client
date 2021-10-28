@@ -14,7 +14,7 @@ const App = () => {
       if (res.error) {
         const errors = res.error.graphQLErrors;
 
-        switch (errors[0].message) {
+        switch (errors[0]?.message) {
           case 'Context creation failed: Unauthenticated':
             alert('Authentication failed.');
             break;

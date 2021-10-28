@@ -7,7 +7,7 @@ const handleServerErrorsOnSave = (
     <U extends string>(v: U extends Function ? never : U) => U
   >
 ) => {
-  switch (errors[0].message) {
+  switch (errors[0]?.message) {
     case 'Mock endpoint already exists':
       messageSetters.setHttpMethodErrorMessage(
         'Combination of HTTP method and URL path must be unique.'
