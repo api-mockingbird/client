@@ -1,7 +1,7 @@
 import { createClient } from '@urql/core';
 
 const client = createClient({
-  url: 'http://localhost:4000/graphql',
+  url: `${import.meta.env.VITE_SERVER_HOST}/graphql`,
   fetchOptions: { credentials: 'include' },
 });
 
