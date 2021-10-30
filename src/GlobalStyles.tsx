@@ -1,6 +1,6 @@
 import { createGlobalStyles } from 'solid-styled-components';
 
-import { MOBILE_VIEWPORT_BREAKPOINT } from './constants';
+import { MOBILE_VIEWPORT_BREAKPOINT } from './constants/numbers';
 
 const GlobalStyles = () => {
   const Styles = createGlobalStyles`

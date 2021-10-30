@@ -3,6 +3,7 @@ import { pipe, subscribe } from 'wonka';
 
 import client from './api/client';
 import { userQuery } from './api/query-documents';
+import { AUTH_FAILED, INTERNAL_SERVER_ERROR } from './constants/messages';
 import ServerSettingsPage from './pages/ServerSettingsPage';
 
 const App = () => {
@@ -16,10 +17,10 @@ const App = () => {
 
         switch (errors[0]?.message) {
           case 'Context creation failed: Unauthenticated':
-            alert('Authentication failed.');
+            alert(AUTH_FAILED);
             break;
           default:
-            alert('Internal Server Error.');
+            alert(INTERNAL_SERVER_ERROR);
         }
 
         return;

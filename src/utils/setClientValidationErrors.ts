@@ -1,3 +1,22 @@
+import {
+  FIELD_REQUIRED,
+  HTTP_HEADERS_INVALID,
+  HTTP_HEADERS_JSON,
+  NAME_INVALID,
+  START_WITH_SLASH,
+  TIMEOUT_INVALID,
+  TIMEOUT_NAN,
+  TIMEOUT_NEGATIVE,
+  URL_INVALID,
+} from '../constants/messages';
+import {
+  EMPTY,
+  FIRST_CHAR_NOT_SLASH,
+  NAN,
+  NEGATIVE,
+  NOT_JSON_FORMAT,
+} from '../constants/validationResults';
+
 const setClientValidationErrors = (
   validationResult: Record<string, string>,
   messageSetters: Record<
@@ -7,55 +26,47 @@ const setClientValidationErrors = (
 ) => {
   if (validationResult.endpointName) {
     switch (validationResult.endpointName) {
-      case 'EMPTY':
-        messageSetters.setEndpointNameErrorMessage('Field is required.');
+      case EMPTY:
+        messageSetters.setEndpointNameErrorMessage(FIELD_REQUIRED);
         break;
       default:
-        messageSetters.setEndpointNameErrorMessage('Endpoint name is invalid.');
+        messageSetters.setEndpointNameErrorMessage(NAME_INVALID);
     }
   }
 
   if (validationResult.urlPath) {
     switch (validationResult.urlPath) {
-      case 'EMPTY':
-        messageSetters.setUrlPathErrorMessage('Field is required.');
+      case EMPTY:
+        messageSetters.setUrlPathErrorMessage(FIELD_REQUIRED);
         break;
-      case 'FIRST_CHAR_NOT_SLASH':
-        messageSetters.setUrlPathErrorMessage(
-          'URL path should start with a forward slash(/).'
-        );
+      case FIRST_CHAR_NOT_SLASH:
+        messageSetters.setUrlPathErrorMessage(START_WITH_SLASH);
         break;
       default:
-        messageSetters.setUrlPathErrorMessage('Url path is invalid.');
+        messageSetters.setUrlPathErrorMessage(URL_INVALID);
     }
   }
 
   if (validationResult.httpHeaders) {
     switch (validationResult.httpHeaders) {
-      case 'NOT_JSON_FORMAT':
-        messageSetters.setHttpHeadersErrorMessage(
-          'HTTP headers must be in JSON format.'
-        );
+      case NOT_JSON_FORMAT:
+        messageSetters.setHttpHeadersErrorMessage(HTTP_HEADERS_JSON);
         break;
       default:
-        messageSetters.setHttpHeadersErrorMessage('HTTP headers is invalid.');
+        messageSetters.setHttpHeadersErrorMessage(HTTP_HEADERS_INVALID);
     }
   }
 
   if (validationResult.timeout) {
     switch (validationResult.timeout) {
-      case 'NAN':
-        messageSetters.setTimeoutErrorMessage(
-          'Timeout value must be a number.'
-        );
+      case NAN:
+        messageSetters.setTimeoutErrorMessage(TIMEOUT_NAN);
         break;
-      case 'NEGATIVE':
-        messageSetters.setTimeoutErrorMessage(
-          'Timeout value cannot be a negative number'
-        );
+      case NEGATIVE:
+        messageSetters.setTimeoutErrorMessage(TIMEOUT_NEGATIVE);
         break;
       default:
-        messageSetters.setTimeoutErrorMessage('Timeout value is invalid.');
+        messageSetters.setTimeoutErrorMessage(TIMEOUT_INVALID);
     }
   }
 };

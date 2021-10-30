@@ -1,5 +1,10 @@
 import { GraphQLError } from 'graphql';
 
+import {
+  ENDPOINT_ALREADY_EXISTS,
+  INTERNAL_SERVER_ERROR,
+} from '../constants/messages';
+
 const handleServerErrorsOnSave = (
   errors: GraphQLError[],
   messageSetters: Record<
@@ -9,15 +14,11 @@ const handleServerErrorsOnSave = (
 ) => {
   switch (errors[0]?.message) {
     case 'Mock endpoint already exists':
-      messageSetters.setHttpMethodErrorMessage(
-        'Combination of HTTP method and URL path must be unique.'
-      );
-      messageSetters.setUrlPathErrorMessage(
-        'Combination of HTTP method and URL path must be unique.'
-      );
+      messageSetters.setHttpMethodErrorMessage(ENDPOINT_ALREADY_EXISTS);
+      messageSetters.setUrlPathErrorMessage(ENDPOINT_ALREADY_EXISTS);
       break;
     default:
-      alert('Internal Server Error.');
+      alert(INTERNAL_SERVER_ERROR);
   }
 };
 

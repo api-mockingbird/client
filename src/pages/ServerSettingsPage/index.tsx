@@ -10,7 +10,7 @@ import { styled } from 'solid-styled-components';
 
 import client from '../../api/client';
 import { getMockEndpointQuery } from '../../api/query-documents';
-import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
+import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants/numbers';
 import {
   isHamburgerActive,
   isViewportNarrow,

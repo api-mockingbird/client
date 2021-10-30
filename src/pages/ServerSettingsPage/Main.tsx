@@ -11,7 +11,10 @@ import LabeledInput from '../../components/LabeledInput';
 import LabeledSelect from '../../components/LabeledSelect';
 import LabeledTextarea from '../../components/LabeledTextarea';
 import SaveButton from '../../components/SaveButton';
-import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
+import * as DESCRIPTION from '../../constants/inputDescriptions';
+import { ENDPOINT_ALREADY_EXISTS } from '../../constants/messages';
+import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants/numbers';
+import * as STATUS from '../../constants/statusOptions';
 import { isViewportNarrow } from '../../store';
 import {
   endpointNameErrorMessage,
@@ -170,11 +173,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         label='Base URL'
         value={baseUrl()}
         suffix={() => CopyIcon({ onClick: handleCopyIconClick })}
-        description={
-          props.user?.isTemp
-            ? 'Expires in 1 hour. Sign up for persistence.'
-            : ''
-        }
+        description={props.user?.isTemp ? DESCRIPTION.EXPIRY_NOTICE : ''}
         readonly
       />
       <LabeledInput
@@ -186,7 +185,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
             endpointName: (event.target as HTMLInputElement).value,
           });
         }}
-        description='A descriptive name.'
+        description={DESCRIPTION.ENDPOINT_NAME}
         errorMessage={endpointNameErrorMessage()}
         borderColor={endpointNameErrorMessage() && 'red'}
       />
@@ -203,6 +202,11 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         preSelectedValue={props.mockEndpointInput.httpMethod}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
           setHttpMethodErrorMessage('');
+
+          if (urlPathErrorMessage() === ENDPOINT_ALREADY_EXISTS) {
+            setUrlPathErrorMessage('');
+          }
+
           props.setMockEndpointInput({ httpMethod: this.value as string });
         }}
         errorMessage={httpMethodErrorMessage()}
@@ -213,11 +217,16 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         value={props.mockEndpointInput.urlPath}
         onInput={(event: Event) => {
           setUrlPathErrorMessage('');
+
+          if (httpMethodErrorMessage() === ENDPOINT_ALREADY_EXISTS) {
+            setHttpHeadersErrorMessage('');
+          }
+
           props.setMockEndpointInput({
             urlPath: (event.target as HTMLInputElement).value,
           });
         }}
-        description='Do not include hostname.'
+        description={DESCRIPTION.URL_PATH}
         errorMessage={urlPathErrorMessage()}
         borderColor={urlPathErrorMessage() && 'red'}
         placeholder='/api/users/1'
@@ -225,18 +234,18 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       <LabeledSelect
         label='HTTP Status*'
         options={[
-          { value: 200, text: '200 - OK' },
-          { value: 201, text: '201 - Created' },
-          { value: 204, text: '204 - No Content' },
-          { value: 400, text: '400 - Bad Request' },
-          { value: 401, text: '401 - Unauthorized' },
-          { value: 403, text: '403 - Forbidden' },
-          { value: 404, text: '404 - Not Found' },
-          { value: 405, text: '405 - Method Not Allowed' },
-          { value: 500, text: '500 - Internal Server Error' },
-          { value: 502, text: '502 - Bad Gateway' },
-          { value: 503, text: '503 - Service Unavailable' },
-          { value: 504, text: '504 - Gateway Timeout' },
+          { value: 200, text: STATUS.STATUS_200 },
+          { value: 201, text: STATUS.STATUS_201 },
+          { value: 204, text: STATUS.STATUS_204 },
+          { value: 400, text: STATUS.STATUS_400 },
+          { value: 401, text: STATUS.STATUS_401 },
+          { value: 403, text: STATUS.STATUS_403 },
+          { value: 404, text: STATUS.STATUS_404 },
+          { value: 405, text: STATUS.STATUS_405 },
+          { value: 500, text: STATUS.STATUS_500 },
+          { value: 502, text: STATUS.STATUS_502 },
+          { value: 503, text: STATUS.STATUS_503 },
+          { value: 504, text: STATUS.STATUS_504 },
         ]}
         preSelectedValue={props.mockEndpointInput.httpStatus}
         onChange={function (this: JSX.SelectHTMLAttributes<HTMLSelectElement>) {
@@ -276,7 +285,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
             httpHeaders: (event.target as HTMLTextAreaElement).value,
           });
         }}
-        description='Set as JSON object.'
+        description={DESCRIPTION.HTTP_HEADERS}
         errorMessage={httpHeadersErrorMessage()}
         borderColor={httpHeadersErrorMessage() && 'red'}
         placeholder='{\n  "X-Foo-Bar": "Hello Mockingbird"\n}'
@@ -290,7 +299,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
             httpResponseBody: (event.target as HTMLTextAreaElement).value,
           });
         }}
-        description='If parsing into JSON is possible response body will be returned in JSON format. Otherwise plain string.'
+        description={DESCRIPTION.RESPONSE_BODY}
         placeholder='{\n  "id": 1,\n  "name": "John Doe",\n  "role": "ADMIN"\n}'
         rows={8}
       />
@@ -304,7 +313,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
           });
         }}
         suffix='ms'
-        description='Set timeout for response.'
+        description={DESCRIPTION.TIMEOUT}
         errorMessage={timeoutErrorMessage()}
         borderColor={timeoutErrorMessage() && 'red'}
       />
