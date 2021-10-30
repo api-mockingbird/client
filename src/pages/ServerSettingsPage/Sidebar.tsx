@@ -41,7 +41,7 @@ const RemoveMockEndpointButton = (props: RemoveMockEndpointButtonProps) => {
 
 const Wrapper = styled('aside')`
   position: fixed;
-  width: 26rem;
+  width: 24rem;
   height: 100%;
   background-color: #f5f5f5;
   z-index: 1000;

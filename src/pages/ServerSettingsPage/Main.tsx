@@ -2,7 +2,10 @@ import { createEffect, createSignal, JSX } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import client from '../../api/client';
-import { createMockEndpointMutation, updateMockEndpointMutation } from '../../api/query-documents';
+import {
+  createMockEndpointMutation,
+  updateMockEndpointMutation,
+} from '../../api/query-documents';
 import CopyIcon from '../../components/CopyIcon';
 import LabeledInput from '../../components/LabeledInput';
 import LabeledSelect from '../../components/LabeledSelect';
@@ -10,7 +13,18 @@ import LabeledTextarea from '../../components/LabeledTextarea';
 import SaveButton from '../../components/SaveButton';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import { isViewportNarrow } from '../../store';
-import { endpointNameErrorMessage, httpHeadersErrorMessage, httpMethodErrorMessage, setEndpointNameErrorMessage, setHttpHeadersErrorMessage, setHttpMethodErrorMessage, setTimeoutErrorMessage, setUrlPathErrorMessage, timeoutErrorMessage, urlPathErrorMessage } from '../../store';
+import {
+  endpointNameErrorMessage,
+  httpHeadersErrorMessage,
+  httpMethodErrorMessage,
+  setEndpointNameErrorMessage,
+  setHttpHeadersErrorMessage,
+  setHttpMethodErrorMessage,
+  setTimeoutErrorMessage,
+  setUrlPathErrorMessage,
+  timeoutErrorMessage,
+  urlPathErrorMessage,
+} from '../../store';
 import { User } from '../../types';
 import { MockEndpointInput } from '../../types';
 import handleServerErrors from '../../utils/handleServerErrorsOnSave';
@@ -56,6 +70,7 @@ interface ServerSettingsFormProps {
 const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   const [baseUrl, setBaseUrl] = createSignal('');
   const [isNew, setIsNew] = createSignal(true);
+  const [isFetching, setIsFetching] = createSignal(false);
 
   createEffect(() => {
     setIsNew(props.currentMockEndpointId === -1);
@@ -122,9 +137,13 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       return;
     }
 
+    setIsFetching(true);
+
     const res = isNew()
       ? await createMockEndpoint()
       : await updateMockEndpoint();
+
+    setIsFetching(false);
 
     if (res.error) {
       handleServerErrors(res.error.graphQLErrors, {
@@ -290,7 +309,11 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
         borderColor={timeoutErrorMessage() && 'red'}
       />
       <SaveButtonWrapper>
-        <SaveButton onClick={handleSaveClick} isNew={isNew()} />
+        <SaveButton
+          onClick={handleSaveClick}
+          isFetching={isFetching()}
+          isNew={isNew()}
+        />
       </SaveButtonWrapper>
     </>
   );

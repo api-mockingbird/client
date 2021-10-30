@@ -42,6 +42,7 @@ const Button = (props: ButtonProps) => {
       color={props.color}
       backgroundColor={props.backgroundColor}
       borderColor={props.borderColor}
+      disabled={props.disabled}
       onClick={props.onClick}
     >
       {props.children}

@@ -1,7 +1,7 @@
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
-interface SaveButtonProps {
-  onClick: () => void;
+interface SaveButtonProps extends ButtonProps {
+  isFetching: boolean;
   isNew: boolean;
 }
 
@@ -12,9 +12,10 @@ const SaveButton = (props: SaveButtonProps) => {
       height='4.2rem'
       color='white'
       backgroundColor='#2e5cf2'
+      disabled={props.isFetching}
       onClick={props.onClick}
     >
-      {props.isNew ? 'Save' : 'Update'}
+      {props.isFetching ? 'Saving...' : props.isNew ? 'Save' : 'Update'}
     </Button>
   );
 };
