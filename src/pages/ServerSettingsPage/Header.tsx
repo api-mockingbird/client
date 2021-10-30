@@ -42,7 +42,7 @@ const AuthButton = () => {
       color='white'
       backgroundColor='#151515'
       borderColor='white'
-      onClick={() => console.log('hi')}
+      onClick={() => alert('Coming soon!')}
     >
       Sign In
     </Button>
