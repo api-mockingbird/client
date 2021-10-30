@@ -7,3 +7,12 @@ export const [isViewportNarrow, setIsViewportNarrow] = createSignal(
 );
 
 export const [isHamburgerActive, setIsHamburgerActive] = createSignal(false);
+
+export const [endpointNameErrorMessage, setEndpointNameErrorMessage] =
+  createSignal('');
+export const [httpMethodErrorMessage, setHttpMethodErrorMessage] =
+  createSignal('');
+export const [urlPathErrorMessage, setUrlPathErrorMessage] = createSignal('');
+export const [httpHeadersErrorMessage, setHttpHeadersErrorMessage] =
+  createSignal('');
+export const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');

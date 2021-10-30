@@ -6,6 +6,7 @@ import { removeMockEndpointMutation } from '../../api/query-documents';
 import CirclePlus from '../../icons/CirclePlus';
 import TrashCan from '../../icons/TrashCan';
 import { MockEndpointResponse } from '../../types';
+import initFormErrors from '../../utils/initFormErrors';
 
 interface RemoveMockEndpointButtonWrapperProps {
   isVisible: boolean;
@@ -104,6 +105,7 @@ const Sidebar = (props: SidebarProps) => {
 
   const handleAddButtonClick = () => {
     props.setCurrentMockEndpointId(-1);
+    initFormErrors();
   };
 
   return (
@@ -119,6 +121,7 @@ const Sidebar = (props: SidebarProps) => {
           {endpoint => {
             const handleMockEndpointClick = () => {
               props.setCurrentMockEndpointId(endpoint.id);
+              initFormErrors();
             };
 
             const handleRemoveMockEndpoint = async (event: Event) => {

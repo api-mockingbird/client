@@ -2,10 +2,7 @@ import { createEffect, createSignal, JSX } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import client from '../../api/client';
-import {
-  createMockEndpointMutation,
-  updateMockEndpointMutation,
-} from '../../api/query-documents';
+import { createMockEndpointMutation, updateMockEndpointMutation } from '../../api/query-documents';
 import CopyIcon from '../../components/CopyIcon';
 import LabeledInput from '../../components/LabeledInput';
 import LabeledSelect from '../../components/LabeledSelect';
@@ -13,9 +10,11 @@ import LabeledTextarea from '../../components/LabeledTextarea';
 import SaveButton from '../../components/SaveButton';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants';
 import { isViewportNarrow } from '../../store';
+import { endpointNameErrorMessage, httpHeadersErrorMessage, httpMethodErrorMessage, setEndpointNameErrorMessage, setHttpHeadersErrorMessage, setHttpMethodErrorMessage, setTimeoutErrorMessage, setUrlPathErrorMessage, timeoutErrorMessage, urlPathErrorMessage } from '../../store';
 import { User } from '../../types';
 import { MockEndpointInput } from '../../types';
 import handleServerErrors from '../../utils/handleServerErrorsOnSave';
+import initFormErrors from '../../utils/initFormErrors';
 import setClientValidationErrors from '../../utils/setClientValidationErrors';
 import validateInput from '../../utils/validateInput';
 
@@ -56,13 +55,6 @@ interface ServerSettingsFormProps {
 
 const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   const [baseUrl, setBaseUrl] = createSignal('');
-  const [endpointNameErrorMessage, setEndpointNameErrorMessage] =
-    createSignal('');
-  const [httpMethodErrorMessage, setHttpMethodErrorMessage] = createSignal('');
-  const [urlPathErrorMessage, setUrlPathErrorMessage] = createSignal('');
-  const [httpHeadersErrorMessage, setHttpHeadersErrorMessage] =
-    createSignal('');
-  const [timeoutErrorMessage, setTimeoutErrorMessage] = createSignal('');
   const [isNew, setIsNew] = createSignal(true);
 
   createEffect(() => {
@@ -114,16 +106,8 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
       .toPromise();
   };
 
-  const initErrors = () => {
-    setEndpointNameErrorMessage('');
-    setHttpMethodErrorMessage('');
-    setUrlPathErrorMessage('');
-    setHttpHeadersErrorMessage('');
-    setTimeoutErrorMessage('');
-  };
-
   const handleSaveClick = async () => {
-    initErrors();
+    initFormErrors();
 
     const validationResult = validateInput(props.mockEndpointInput);
 
