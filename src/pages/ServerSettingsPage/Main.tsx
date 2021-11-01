@@ -5,7 +5,7 @@ import client from '../../api/client';
 import {
   createMockEndpointMutation,
   updateMockEndpointMutation,
-} from '../../api/query-documents';
+} from '../../api/mutations';
 import CopyIcon from '../../components/CopyIcon';
 import LabeledInput from '../../components/LabeledInput';
 import LabeledSelect from '../../components/LabeledSelect';

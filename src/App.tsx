@@ -2,7 +2,7 @@ import { createSignal } from 'solid-js';
 import { pipe, subscribe } from 'wonka';
 
 import client from './api/client';
-import { userQuery } from './api/query-documents';
+import { userQuery } from './api/queries';
 import { AUTH_FAILED, INTERNAL_SERVER_ERROR } from './constants/messages';
 import ServerSettingsPage from './pages/ServerSettingsPage';
 

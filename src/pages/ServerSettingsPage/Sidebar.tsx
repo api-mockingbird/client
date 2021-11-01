@@ -2,7 +2,7 @@ import { createSignal, For } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 import client from '../../api/client';
-import { removeMockEndpointMutation } from '../../api/query-documents';
+import { removeMockEndpointMutation } from '../../api/mutations';
 import CirclePlus from '../../icons/CirclePlus';
 import TrashCan from '../../icons/TrashCan';
 import { MockEndpointResponse } from '../../types';

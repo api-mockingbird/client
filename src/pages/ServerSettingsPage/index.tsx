@@ -9,7 +9,7 @@ import { createStore } from 'solid-js/store';
 import { styled } from 'solid-styled-components';
 
 import client from '../../api/client';
-import { getMockEndpointQuery } from '../../api/query-documents';
+import { getMockEndpointQuery } from '../../api/queries';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants/numbers';
 import {
   isHamburgerActive,
