@@ -3,6 +3,8 @@ export const AUTH_FAILED = 'Authentication failed.';
 
 export const ENDPOINT_ALREADY_EXISTS =
   'Endpoint already exists. Combination of HTTP method and URL path must be unique.';
+export const TOO_MANY_MOCK_ENDPOINTS =
+  'Number of endpoints has reached the limit.';
 export const FIELD_REQUIRED = 'Field is required.';
 export const NAME_INVALID = 'Endpoint name is invalid.';
 export const START_WITH_SLASH =

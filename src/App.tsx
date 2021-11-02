@@ -3,6 +3,7 @@ import { pipe, subscribe } from 'wonka';
 
 import client from './api/client';
 import { userQuery } from './api/queries';
+import { UNAUTHENTICATED } from './constants/errorCodes';
 import { AUTH_FAILED, INTERNAL_SERVER_ERROR } from './constants/messages';
 import ServerSettingsPage from './pages/ServerSettingsPage';
 
@@ -15,8 +16,8 @@ const App = () => {
       if (res.error) {
         const errors = res.error.graphQLErrors;
 
-        switch (errors[0]?.message) {
-          case 'Context creation failed: Unauthenticated':
+        switch (errors[0]?.extensions?.code) {
+          case UNAUTHENTICATED:
             alert(AUTH_FAILED);
             break;
           default:
