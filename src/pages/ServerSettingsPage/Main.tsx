@@ -12,7 +12,10 @@ import LabeledSelect from '../../components/LabeledSelect';
 import LabeledTextarea from '../../components/LabeledTextarea';
 import SaveButton from '../../components/SaveButton';
 import * as DESCRIPTION from '../../constants/inputDescriptions';
-import { ENDPOINT_ALREADY_EXISTS } from '../../constants/messages';
+import {
+  ENDPOINT_ALREADY_EXISTS,
+  TOO_MANY_MOCK_ENDPOINTS,
+} from '../../constants/messages';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants/numbers';
 import * as STATUS from '../../constants/statusOptions';
 import { isViewportNarrow } from '../../store';
@@ -127,6 +130,12 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   const handleSaveClick = async () => {
     initFormErrors();
 
+    if (props.user?.mockEndpoints.length! >= 10) {
+      alert(TOO_MANY_MOCK_ENDPOINTS);
+
+      return;
+    }
+
     const validationResult = validateInput(props.mockEndpointInput);
 
     if (Object.keys(validationResult).length) {
@@ -219,7 +228,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
           setUrlPathErrorMessage('');
 
           if (httpMethodErrorMessage() === ENDPOINT_ALREADY_EXISTS) {
-            setHttpHeadersErrorMessage('');
+            setHttpMethodErrorMessage('');
           }
 
           props.setMockEndpointInput({
