@@ -1,26 +1,37 @@
-import { GraphQLError } from 'graphql';
+import { CombinedError } from '@urql/core';
 
 import { BAD_USER_INPUT } from '../constants/errorCodes';
 import {
+  BAD_USER_INPUT,
+  TOO_MANY_MOCK_ENDPOINTS as TOO_MANY_MOCK_ENDPOINTS_CODE,
+} from '../constants/errorCodes';
+import {
   ENDPOINT_ALREADY_EXISTS,
   INTERNAL_SERVER_ERROR,
-  TOO_MANY_MOCK_ENDPOINTS,
+  TOO_MANY_MOCK_ENDPOINTS as TOO_MANY_MOCK_ENDPOINTS_MSG,
+  TOO_MANY_REQUESTS,
 } from '../constants/messages';
 
 const handleServerErrorsOnSave = (
-  errors: GraphQLError[],
+  error: CombinedError,
   messageSetters: Record<
     string,
     <U extends string>(v: U extends Function ? never : U) => U
   >
 ) => {
-  switch (errors[0]?.extensions?.code) {
+  if (error.response.status === 429) {
+    alert(TOO_MANY_REQUESTS);
+
+    return;
+  }
+
+  switch (error.graphQLErrors[0]?.extensions?.code) {
     case BAD_USER_INPUT:
       messageSetters.setHttpMethodErrorMessage(ENDPOINT_ALREADY_EXISTS);
       messageSetters.setUrlPathErrorMessage(ENDPOINT_ALREADY_EXISTS);
       break;
-    case TOO_MANY_MOCK_ENDPOINTS:
-      alert(TOO_MANY_MOCK_ENDPOINTS);
+    case TOO_MANY_MOCK_ENDPOINTS_CODE:
+      alert(TOO_MANY_MOCK_ENDPOINTS_MSG);
       break;
     default:
       alert(INTERNAL_SERVER_ERROR);

@@ -159,13 +159,7 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     setIsFetching(false);
 
     if (res.error) {
-      if (res.error.response.status === 429) {
-        alert(TOO_MANY_REQUESTS);
-
-        return;
-      }
-
-      handleServerErrors(res.error.graphQLErrors, {
+      handleServerErrors(res.error, {
         setHttpMethodErrorMessage,
         setUrlPathErrorMessage,
       });
