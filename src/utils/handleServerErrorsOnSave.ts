@@ -1,6 +1,5 @@
 import { CombinedError } from '@urql/core';
 
-import { BAD_USER_INPUT } from '../constants/errorCodes';
 import {
   BAD_USER_INPUT,
   TOO_MANY_MOCK_ENDPOINTS as TOO_MANY_MOCK_ENDPOINTS_CODE,
