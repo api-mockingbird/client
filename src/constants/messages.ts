@@ -1,6 +1,7 @@
 export const INTERNAL_SERVER_ERROR = 'Internal Server Error.';
 export const TOO_MANY_REQUESTS = 'Too many requests.';
 export const AUTH_FAILED = 'Authentication failed.';
+export const BAD_REQUEST = 'Bad request';
 
 export const ENDPOINT_ALREADY_EXISTS =
   'Endpoint already exists. Combination of HTTP method and URL path must be unique.';

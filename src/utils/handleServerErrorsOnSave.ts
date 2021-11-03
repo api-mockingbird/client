@@ -2,9 +2,11 @@ import { CombinedError } from '@urql/core';
 
 import {
   BAD_USER_INPUT,
+  GRAPHQL_VALIDATION_FAILED,
   TOO_MANY_MOCK_ENDPOINTS as TOO_MANY_MOCK_ENDPOINTS_CODE,
 } from '../constants/errorCodes';
 import {
+  BAD_REQUEST,
   ENDPOINT_ALREADY_EXISTS,
   INTERNAL_SERVER_ERROR,
   TOO_MANY_MOCK_ENDPOINTS as TOO_MANY_MOCK_ENDPOINTS_MSG,
@@ -31,6 +33,9 @@ const handleServerErrorsOnSave = (
       break;
     case TOO_MANY_MOCK_ENDPOINTS_CODE:
       alert(TOO_MANY_MOCK_ENDPOINTS_MSG);
+      break;
+    case GRAPHQL_VALIDATION_FAILED:
+      alert(BAD_REQUEST);
       break;
     default:
       alert(INTERNAL_SERVER_ERROR);

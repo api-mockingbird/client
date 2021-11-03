@@ -3,9 +3,13 @@ import { pipe, subscribe } from 'wonka';
 
 import client from './api/client';
 import { userQuery } from './api/queries';
-import { UNAUTHENTICATED } from './constants/errorCodes';
+import {
+  GRAPHQL_VALIDATION_FAILED,
+  UNAUTHENTICATED,
+} from './constants/errorCodes';
 import {
   AUTH_FAILED,
+  BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   TOO_MANY_REQUESTS,
 } from './constants/messages';
@@ -24,11 +28,12 @@ const App = () => {
           return;
         }
 
-        const errors = res.error.graphQLErrors;
-
-        switch (errors[0]?.extensions?.code) {
+        switch (res.error.graphQLErrors[0].extensions?.code) {
           case UNAUTHENTICATED:
             alert(AUTH_FAILED);
+            break;
+          case GRAPHQL_VALIDATION_FAILED:
+            alert(BAD_REQUEST);
             break;
           default:
             alert(INTERNAL_SERVER_ERROR);
