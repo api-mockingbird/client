@@ -1,4 +1,5 @@
 export const INTERNAL_SERVER_ERROR = 'Internal Server Error.';
+export const TOO_MANY_REQUESTS = 'Too many requests.';
 export const AUTH_FAILED = 'Authentication failed.';
 
 export const ENDPOINT_ALREADY_EXISTS =

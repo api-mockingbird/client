@@ -4,7 +4,11 @@ import { pipe, subscribe } from 'wonka';
 import client from './api/client';
 import { userQuery } from './api/queries';
 import { UNAUTHENTICATED } from './constants/errorCodes';
-import { AUTH_FAILED, INTERNAL_SERVER_ERROR } from './constants/messages';
+import {
+  AUTH_FAILED,
+  INTERNAL_SERVER_ERROR,
+  TOO_MANY_REQUESTS,
+} from './constants/messages';
 import ServerSettingsPage from './pages/ServerSettingsPage';
 
 const App = () => {
@@ -14,6 +18,12 @@ const App = () => {
     client.query(userQuery),
     subscribe(res => {
       if (res.error) {
+        if (res.error.response.status === 429) {
+          alert(TOO_MANY_REQUESTS);
+
+          return;
+        }
+
         const errors = res.error.graphQLErrors;
 
         switch (errors[0]?.extensions?.code) {

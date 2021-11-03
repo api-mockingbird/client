@@ -10,6 +10,10 @@ import { styled } from 'solid-styled-components';
 
 import client from '../../api/client';
 import { getMockEndpointQuery } from '../../api/queries';
+import {
+  INTERNAL_SERVER_ERROR,
+  TOO_MANY_REQUESTS,
+} from '../../constants/messages';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants/numbers';
 import {
   isHamburgerActive,
@@ -49,16 +53,28 @@ const ServerSettingsPage = (props: ServerSettingsPageProps) => {
     JSON.parse(JSON.stringify(mockEndpointInputInitialState))
   );
   const [queriedMockEndpoint, { refetch: fetchMockEndpointById }] =
-    createResource(() => {
+    createResource(async () => {
       if (currentMockEndpointId() < 0) return;
 
-      return client
+      const res = await client
         .query(getMockEndpointQuery, {
           getMockEndpointData: {
             id: currentMockEndpointId(),
           },
         })
         .toPromise();
+
+      if (res.error) {
+        if (res.error.response.status === 429) {
+          alert(TOO_MANY_REQUESTS);
+        } else {
+          alert(INTERNAL_SERVER_ERROR);
+        }
+
+        return null;
+      }
+
+      return res;
     });
 
   createEffect(() => {

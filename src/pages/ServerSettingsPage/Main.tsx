@@ -15,6 +15,7 @@ import * as DESCRIPTION from '../../constants/inputDescriptions';
 import {
   ENDPOINT_ALREADY_EXISTS,
   TOO_MANY_MOCK_ENDPOINTS,
+  TOO_MANY_REQUESTS,
 } from '../../constants/messages';
 import { MOBILE_VIEWPORT_BREAKPOINT } from '../../constants/numbers';
 import * as STATUS from '../../constants/statusOptions';
@@ -158,6 +159,12 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
     setIsFetching(false);
 
     if (res.error) {
+      if (res.error.response.status === 429) {
+        alert(TOO_MANY_REQUESTS);
+
+        return;
+      }
+
       handleServerErrors(res.error.graphQLErrors, {
         setHttpMethodErrorMessage,
         setUrlPathErrorMessage,
