@@ -4,6 +4,8 @@
 
 Mockingbird mocks your API endpoints. Use it while developing your application's frontend. No more fuss creating mock data or mock servers!
 
+<center><image src="/README.assets/demo.gif" width="600" /></center>
+
 ### How To Use
 
 ```
@@ -14,7 +16,7 @@ Authentication is not yet implemented.
 
 <center><img src="/README.assets/baseurl.jpg" width="500px" /></center>
 A base URL with a subdomain of your ID or a random unique identifier will be given.
-Click on the copy icon to copy
+Click on the copy icon to copy URL.
 
 #### 2. Register Endpoint
 
