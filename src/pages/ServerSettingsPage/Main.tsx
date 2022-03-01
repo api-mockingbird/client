@@ -84,11 +84,14 @@ const ServerSettingsForm = (props: ServerSettingsFormProps) => {
   });
 
   createEffect(() => {
+    const protocol = import.meta.env.MODE === 'production' ? 'https' : 'http';
     const subdomain = props.user?.id;
 
     setBaseUrl(
       `${
-        subdomain ? `https://${subdomain}.${import.meta.env.VITE_DOMAIN}` : ''
+        subdomain
+          ? `${protocol}://${subdomain}.${import.meta.env.VITE_DOMAIN}`
+          : ''
       }`
     );
   });
